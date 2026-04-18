@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ProfessionalOneWish } from "../core/types";
+import { formatFriendlyDate } from "../utils";
 
 interface RsvpWishesProps {
   wishes: ProfessionalOneWish[];
@@ -45,7 +46,7 @@ export function ProfessionalOneRsvpWishes({ wishes }: RsvpWishesProps) {
                   isRight ? "opacity-60" : "text-outline-variant",
                 )}
               >
-                {wish.name} - {wish.timeLabel}
+                {wish.name} - {formatFriendlyDate(wish.timeLabel)}
               </span>
             </div>
           </div>

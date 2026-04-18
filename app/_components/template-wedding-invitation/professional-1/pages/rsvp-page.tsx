@@ -2,6 +2,7 @@
 import { FiArrowLeft, FiChevronDown, FiEdit3, FiUser } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import { RiDoubleQuotesL } from "react-icons/ri";
+import { formatFriendlyDate } from "../utils";
 
 type InteractionItem = {
   id: string;
@@ -17,31 +18,6 @@ type ProfessionalOneRsvpPageProps = {
   brandName?: string;
   interactions?: InteractionItem[];
 };
-
-function formatTimeLabel(dateString?: string) {
-  if (!dateString) {
-    return "Baru saja";
-  }
-
-  const timestamp = new Date(dateString).getTime();
-  if (Number.isNaN(timestamp)) {
-    return "Baru saja";
-  }
-
-  const diffMs = Date.now() - timestamp;
-  const diffHours = Math.floor(diffMs / 3600000);
-
-  if (diffHours < 1) {
-    return "Kurang dari 1 jam yang lalu";
-  }
-
-  if (diffHours < 24) {
-    return `${diffHours} jam yang lalu`;
-  }
-
-  const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays} hari yang lalu`;
-}
 
 export function ProfessionalOneRsvpPage({
   brandName = "Kala Waktu",
@@ -91,7 +67,7 @@ export function ProfessionalOneRsvpPage({
                   <div>
                     <h4 className="font-headline font-bold text-primary">{item.name}</h4>
                     <p className="text-[10px] uppercase tracking-widest text-outline">
-                      {formatTimeLabel(item.createdAt)}
+                      {formatFriendlyDate(item.createdAt)}
                     </p>
                     <p className="text-[10px] uppercase tracking-widest text-outline/70">
                       {item.absence ? "Tidak hadir" : "Hadir"}
@@ -120,7 +96,9 @@ export function ProfessionalOneRsvpPage({
       <footer className="mt-24 w-full bg-surface-container-low py-12 dark:bg-[#252722]">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-6 px-12 md:flex-row">
           <div className="flex flex-col items-center gap-2 md:items-start">
-            <span className="font-headline text-lg text-primary italic dark:text-[#fafaf5]">{brandName}</span>
+            <span className="font-headline text-lg text-primary italic dark:text-[#fafaf5]">
+              {brandName}
+            </span>
             <p className="font-body text-sm tracking-wide text-primary opacity-60">
               &copy; 2024 {brandName}. Handcrafted for our forever.
             </p>

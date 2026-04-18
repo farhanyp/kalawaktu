@@ -90,13 +90,7 @@ export function buildTemplateData(
         id: item.id,
         initial: item.name ? item.name.charAt(0).toUpperCase() : "?",
         name: item.name || "Tamu Undangan",
-        timeLabel: item.created_at
-          ? new Date(item.created_at).toLocaleDateString("id-ID", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })
-          : "Baru saja",
+        timeLabel: item.created_at ? item.created_at : "Baru saja",
         message: item.message ?? "",
         tone: item.absence ? "default" : "primary",
         align: "left",

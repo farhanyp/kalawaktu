@@ -3,18 +3,12 @@
 import { revalidatePath } from "next/cache";
 import {
   createInteractionByClientUrl,
-  getInteractionsByClientUrl,
   CreateInteractionInput,
-} from "@/app/preview/professional-1/naruto-hinata/data"; // Sesuaikan path ini
+} from "@/app/preview/professional-1/naruto-hinata/data";
 
-/**
- * Action untuk mengirim RSVP baru
- */
 export async function submitRsvpAction(clientUrl: string, input: CreateInteractionInput) {
   try {
     const data = await createInteractionByClientUrl(clientUrl, input);
-
-    // Revalidasi cache agar data terbaru masuk ke server-side rendering jika diperlukan
     revalidatePath(`/preview/professional-1/${clientUrl}/beranda`);
 
     return { success: true, data };

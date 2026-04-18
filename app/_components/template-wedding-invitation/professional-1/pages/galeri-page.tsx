@@ -21,14 +21,22 @@ const fallbackImages = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuDyqtWQnerO7QkWVrEiuGP0kJmqUGad6baTNxztcoFzcCH-ma-KYLxEDp4NM4QWs0MyEU-IF7NbHECP007h0A9JroZAXghxAIDYbo-xyf3bHFawxJVlMt0Dyd-vdoQHz4j83qffksi9UvLIZIuy6JmAV-_bjSCN6MyxmfmUI71mQxoI0nROpQRNtHSjLNBFrxV7A3CEPe_V6ffHQw2W4Ff_Jw80AUr23kEpq64EfAl5mcn6uiTaWh-mCxHzXmlxDQkUgsSEWz0QbkJI",
 ];
 
-export function ProfessionalOneGaleriPage({ brandName, photos = [] }: ProfessionalOneGaleriPageProps) {
+export function ProfessionalOneGaleriPage({
+  brandName,
+  photos = [],
+}: ProfessionalOneGaleriPageProps) {
   const cloudGalleryUrl = "https://drive.google.com/drive/folders/";
   const photographerWhatsAppUrl =
     "https://wa.me/6281234567890?text=Halo%20kak%2C%20saya%20ingin%20bertanya%20soal%20dokumentasi%20foto%20wedding.";
 
-  const galleryItems = photos.length > 0
-    ? photos.map((photo) => ({ id: photo.id, url: photo.url, label: photo.name ?? "Wedding Moment" }))
-    : fallbackImages.map((url, index) => ({ id: index + 1, url, label: `Photo ${index + 1}` }));
+  const galleryItems =
+    photos.length > 0
+      ? photos.map((photo) => ({
+          id: photo.id,
+          url: photo.url,
+          label: photo.name ?? "Wedding Moment",
+        }))
+      : fallbackImages.map((url, index) => ({ id: index + 1, url, label: `Photo ${index + 1}` }));
 
   return (
     <main className="bg-background font-body text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
@@ -45,8 +53,11 @@ export function ProfessionalOneGaleriPage({ brandName, photos = [] }: Profession
 
         <section className="mb-20 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {galleryItems.map((item, index) => (
-            <article key={item.id} className="group overflow-hidden rounded-2xl bg-surface-container-low">
-              <div className={index % 3 === 0 ? "aspect-[4/5]" : "aspect-square"}>
+            <article
+              key={item.id}
+              className="group overflow-hidden rounded-2xl bg-surface-container-low"
+            >
+              <div className={index % 3 === 0 ? "aspect-4/5" : "aspect-square"}>
                 <img
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   alt={item.label}
@@ -99,13 +110,22 @@ export function ProfessionalOneGaleriPage({ brandName, photos = [] }: Profession
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
           <div className="font-headline text-xl italic text-stone-900">{brandName}</div>
           <div className="flex gap-8">
-            <a className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900" href="#">
+            <a
+              className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+              href="#"
+            >
               Privacy Policy
             </a>
-            <a className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900" href="#">
+            <a
+              className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+              href="#"
+            >
               Registry
             </a>
-            <a className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900" href="#">
+            <a
+              className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+              href="#"
+            >
               Contact
             </a>
           </div>
