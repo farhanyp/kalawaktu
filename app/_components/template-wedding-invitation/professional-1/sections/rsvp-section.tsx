@@ -30,18 +30,12 @@ function toneByAttendance(status: AttendanceStatus): ProfessionalOneWish["tone"]
 export function ProfessionalOneRsvpSection({ invitation }: RSVPSectionProps) {
   const { slug, wishes: serverWishes } = invitation;
 
-  console.log("whises: ", serverWishes);
-
   const [formData, setFormData] = useState<ProfessionalOneRsvpFormData>(initialFormData);
-  // Inisialisasi wishes langsung dari data server
   const [wishes, setWishes] = useState<ProfessionalOneWish[]>(serverWishes);
-  const [isLoading, setIsLoading] = useState(false); // Set false karena data sudah ada dari server
+  const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const STORAGE_KEY = `kala_waktu_sent_ids_${slug}`;
-
-  // Sinkronisasi posisi "align" berdasarkan LocalStorage (Client-side only)
   useEffect(() => {
     const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     if (sentIds.length > 0) {
@@ -84,13 +78,9 @@ export function ProfessionalOneRsvpSection({ invitation }: RSVPSectionProps) {
 
       if (result.success && result.data) {
         const newId = result.data.id;
-
-        // Simpan ID ke Local Storage
         const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
         sentIds.push(newId);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(sentIds));
-
-        // Buat objek wish baru untuk update UI instan
         const newWish: ProfessionalOneWish = {
           id: newId,
           initial: name.charAt(0).toUpperCase(),
