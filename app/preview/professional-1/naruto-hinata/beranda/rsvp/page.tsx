@@ -21,8 +21,6 @@ export default async function PreviewProfessional1RsvpPage() {
     createdAt: item.created_at,
   }));
 
-  console.log("Page RSVP: ", interactions);
-
   return (
     <ProfessionalOneRsvpPage brandName={data.invitation.brandName} interactions={interactions} />
   );

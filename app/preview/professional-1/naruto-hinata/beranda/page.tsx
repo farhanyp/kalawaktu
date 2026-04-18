@@ -4,7 +4,5 @@ import { getProfessionalOnePreviewData } from "../data";
 export default async function PreviewProfessional1BerandaPage() {
   const data = await getProfessionalOnePreviewData();
 
-  console.log("Page data landing page: ", data);
-
   return <ProfessionalOneLandingPage basePath={data.url} invitation={data.invitation} />;
 }

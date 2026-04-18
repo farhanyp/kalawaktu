@@ -17,7 +17,5 @@ export default async function PreviewProfessional1GaleriPage() {
     url: item.url,
   }));
 
-  console.log("Page photos: ", photos);
-
   return <ProfessionalOneGaleriPage brandName={data.invitation.brandName} photos={photos} />;
 }

@@ -19,8 +19,6 @@ export default async function PreviewProfessional1CeritaPage() {
     urlImage: item.url_image,
   }));
 
-  console.log("Page stories: ", stories);
-
   return (
     <ProfessionalOneCeritaPage
       basePath={data.url}
