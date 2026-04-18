@@ -8,7 +8,7 @@ export function ProfessionalOneFooterSection() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-6">
             <div className="font-headline text-3xl font-bold tracking-tighter text-stone-900">
-              The Editorial Union
+              Kala Waktu
             </div>
             <p className="max-w-sm font-body leading-relaxed text-stone-600">
               Menciptakan kenangan digital yang elegan untuk momen paling berharga dalam hidup Anda.
@@ -101,7 +101,7 @@ export function ProfessionalOneFooterSection() {
       <div className="border-t border-stone-200 bg-stone-100 px-6 py-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-6 md:flex-row">
           <div className="font-body text-[10px] font-medium tracking-[0.2em] text-stone-500 uppercase">
-            &copy; 2024 The Editorial Union. All Rights Reserved.
+            &copy; 2024 Kala Waktu. All Rights Reserved.
           </div>
         </div>
       </div>

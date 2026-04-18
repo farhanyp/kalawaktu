@@ -86,7 +86,8 @@ export function ProfessionalOneCeritaPage({
           <div className="rounded-3xl bg-surface-container-lowest p-12 md:col-span-2">
             <RiDoubleQuotesL className="mb-6 text-5xl text-secondary" />
             <p className="font-headline text-4xl italic leading-snug text-primary">
-              &quot;Dalam editorial hidup yang tak terduga, kau adalah paragraf yang tak pernah ingin aku akhiri.&quot;
+              &quot;Dalam editorial hidup yang tak terduga, kau adalah paragraf yang tak pernah
+              ingin aku akhiri.&quot;
             </p>
             <div className="mt-8 flex items-center gap-4">
               <div className="h-px w-12 bg-outline-variant" />
@@ -97,7 +98,9 @@ export function ProfessionalOneCeritaPage({
           </div>
           <div className="grid grid-rows-2 gap-6">
             <div className="rounded-3xl bg-secondary-container p-8 text-center">
-              <h3 className="mb-2 font-headline text-5xl text-on-secondary-container">{stories.length}</h3>
+              <h3 className="mb-2 font-headline text-5xl text-on-secondary-container">
+                {stories.length}
+              </h3>
               <p className="text-xs font-bold uppercase tracking-widest text-on-secondary-container">
                 Cerita Tersimpan
               </p>
@@ -111,7 +114,9 @@ export function ProfessionalOneCeritaPage({
       </section>
 
       <section className="bg-surface px-6 py-24 text-center">
-        <h2 className="mb-8 font-headline text-5xl italic text-primary">Bersiaplah Menjadi Bagian Dari Kami.</h2>
+        <h2 className="mb-8 font-headline text-5xl italic text-primary">
+          Bersiaplah Menjadi Bagian Dari Kami.
+        </h2>
         <div className="flex justify-center gap-6">
           <Link
             className="rounded-xl bg-secondary px-10 py-4 text-sm font-bold uppercase tracking-widest text-on-secondary shadow-lg transition-all hover:opacity-90"
@@ -126,21 +131,34 @@ export function ProfessionalOneCeritaPage({
             Detail Acara
           </Link>
         </div>
-        <div className="mt-10 inline-flex items-center gap-2 text-primary">
-          <FiArrowRight />
-          <span className="text-sm">Lanjutkan ke momen berikutnya</span>
-        </div>
       </section>
 
       <footer className="w-full border-t border-stone-200 bg-stone-100 px-8 py-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
           <div className="font-headline text-xl italic text-stone-900">{brandName}</div>
           <div className="flex gap-8">
-            <a className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900" href="#">Privacy Policy</a>
-            <a className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900" href="#">Registry</a>
-            <a className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900" href="#">Contact</a>
+            <a
+              className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+              href="#"
+            >
+              Privacy Policy
+            </a>
+            <a
+              className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+              href="#"
+            >
+              Registry
+            </a>
+            <a
+              className="font-body text-xs uppercase tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+              href="#"
+            >
+              Contact
+            </a>
           </div>
-          <div className="font-body text-xs uppercase tracking-widest text-stone-500">&copy; 2024 {brandName}. Designed for the modern couple.</div>
+          <div className="font-body text-xs uppercase tracking-widest text-stone-500">
+            &copy; 2024 {brandName}. Designed for the modern couple.
+          </div>
         </div>
       </footer>
     </main>
