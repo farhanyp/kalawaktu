@@ -6,7 +6,6 @@ import {
   getInteractionsByClientUrl,
   CreateInteractionInput,
 } from "@/app/preview/professional-1/naruto-hinata/data"; // Sesuaikan path ini
-import { Wish } from "@/types/rsvp";
 
 /**
  * Action untuk mengirim RSVP baru

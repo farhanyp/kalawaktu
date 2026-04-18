@@ -2,63 +2,57 @@
 
 import { useState, useEffect } from "react";
 import { ProfessionalOneRsvpWishes } from "./rsvp-wishes";
-import type { AttendanceStatus, RsvpFormData, Wish } from "@/types/rsvp";
-import { getInteractionsAction, submitRsvpAction } from "../actions/rsvp-action";
+import { submitRsvpAction } from "../actions/rsvp-action";
+import {
+  AttendanceStatus,
+  ProfessionalOneInvitationData,
+  ProfessionalOneRsvpFormData,
+  ProfessionalOneWish,
+} from "../core/types";
 
-interface ProfessionalOneRsvpSectionProps {
-  slug: string;
-}
+type RSVPSectionProps = {
+  invitation: ProfessionalOneInvitationData;
+};
 
-const initialFormData: RsvpFormData = {
+const initialFormData: ProfessionalOneRsvpFormData = {
   name: "",
   guestCount: "1",
   attendance: "hadir",
   message: "",
 };
 
-function toneByAttendance(status: AttendanceStatus): Wish["tone"] {
+function toneByAttendance(status: AttendanceStatus): ProfessionalOneWish["tone"] {
   if (status === "hadir") return "primary";
   if (status === "ragu-ragu") return "tertiary";
   return "default";
 }
 
-export function ProfessionalOneRsvpSection({ slug }: ProfessionalOneRsvpSectionProps) {
-  const [formData, setFormData] = useState<RsvpFormData>(initialFormData);
-  const [wishes, setWishes] = useState<Wish[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export function ProfessionalOneRsvpSection({ invitation }: RSVPSectionProps) {
+  const { slug, wishes: serverWishes } = invitation;
+
+  console.log("whises: ", serverWishes);
+
+  const [formData, setFormData] = useState<ProfessionalOneRsvpFormData>(initialFormData);
+  // Inisialisasi wishes langsung dari data server
+  const [wishes, setWishes] = useState<ProfessionalOneWish[]>(serverWishes);
+  const [isLoading, setIsLoading] = useState(false); // Set false karena data sudah ada dari server
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Kunci penyimpanan unik per client undangan
   const STORAGE_KEY = `kala_waktu_sent_ids_${slug}`;
 
-  // 1. Ambil data awal dan sinkronisasi dengan Local Storage
+  // Sinkronisasi posisi "align" berdasarkan LocalStorage (Client-side only)
   useEffect(() => {
-    async function fetchAndPersonalizeWishes() {
-      try {
-        const result = await getInteractionsAction();
-
-        if (result.success) {
-          // Ambil daftar ID yang pernah dikirim dari perangkat ini
-          const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-
-          // Map ulang data: Default kiri, jika ID terdaftar maka kanan
-          const personalizedWishes = result.data.map((wish: Wish) => ({
-            ...wish,
-            align: sentIds.includes(wish.id) ? "right" : "left",
-          })) as Wish[];
-
-          setWishes(personalizedWishes);
-        }
-      } catch (err) {
-        console.error("Failed to load wishes:", err);
-      } finally {
-        setIsLoading(false);
-      }
+    const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (sentIds.length > 0) {
+      setWishes((prev) =>
+        prev.map((wish) => ({
+          ...wish,
+          align: sentIds.includes(wish.id) ? "right" : "left",
+        })),
+      );
     }
-
-    if (slug) fetchAndPersonalizeWishes();
-  }, [slug]);
+  }, [STORAGE_KEY]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,7 +74,6 @@ export function ProfessionalOneRsvpSection({ slug }: ProfessionalOneRsvpSectionP
     setFeedback("");
 
     try {
-      // 2. Kirim data ke Database
       const result = await submitRsvpAction(slug, {
         name,
         message,
@@ -92,13 +85,13 @@ export function ProfessionalOneRsvpSection({ slug }: ProfessionalOneRsvpSectionP
       if (result.success && result.data) {
         const newId = result.data.id;
 
-        // 3. Simpan ID baru ke Local Storage agar kedepannya tetap di kanan
+        // Simpan ID ke Local Storage
         const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
         sentIds.push(newId);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(sentIds));
 
-        // 4. Update UI secara Instan (set align ke 'right' karena ini milik user)
-        const newWish: Wish = {
+        // Buat objek wish baru untuk update UI instan
+        const newWish: ProfessionalOneWish = {
           id: newId,
           initial: name.charAt(0).toUpperCase(),
           name: name,

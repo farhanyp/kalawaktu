@@ -30,6 +30,18 @@ export type EventRow = {
   updated_at?: string;
 };
 
+export type WishesRow = {
+  id: string;
+  client_id: string;
+  name: string;
+  message: string;
+  absence: boolean;
+  total_guest: number;
+  is_confirmed: boolean;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type PhotoRow = {
   id: number;
   client_id: string;

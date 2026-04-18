@@ -23,7 +23,7 @@ export function ProfessionalOneLandingPage({
       <ProfessionalOneStorySection basePath={basePath} />
       <ProfessionalOneGallerySection basePath={basePath} />
       <ProfessionalOneGiftSection />
-      <ProfessionalOneRsvpSection slug={invitation.slug} />
+      <ProfessionalOneRsvpSection invitation={invitation} />
       <ProfessionalOneFooterSection />
     </main>
   );

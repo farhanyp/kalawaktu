@@ -6,7 +6,9 @@ import {
   type ClientRow,
   type EventRow,
   EVENT_TYPES,
+  WishesRow,
 } from "./types";
+import { ProfessionalOneWish } from "@/app/_components/template-wedding-invitation/professional-1/core/types";
 
 export function splitPartnerNames(clientName: string): [string, string] {
   const normalized = clientName.trim();
@@ -42,7 +44,11 @@ export function formatDateLabel(rawDate?: string | null) {
   }).format(eventDate);
 }
 
-export function buildTemplateData(client: ClientRow, events: EventRow[] = []): PreviewData {
+export function buildTemplateData(
+  client: ClientRow,
+  events: EventRow[] = [],
+  wishes: WishesRow[] = [],
+): PreviewData {
   const akadEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.AKAD);
   const resepsiEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.RESEPSI);
 
@@ -80,6 +86,21 @@ export function buildTemplateData(client: ClientRow, events: EventRow[] = []): P
           googleMapsUrl: resepsiEvent?.url_map ?? "Lokasi Akad Nikah",
         },
       },
+      wishes: wishes.map((item) => ({
+        id: item.id,
+        initial: item.name ? item.name.charAt(0).toUpperCase() : "?",
+        name: item.name || "Tamu Undangan",
+        timeLabel: item.created_at
+          ? new Date(item.created_at).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+          : "Baru saja",
+        message: item.message ?? "",
+        tone: item.absence ? "default" : "primary",
+        align: "left",
+      })),
     },
     url: `/preview/professional-1/${client.url}/beranda`,
   };
@@ -122,6 +143,17 @@ export function buildFallbackTemplateData(slug: string): PreviewData {
           googleMapsUrl: "Lokasi Akad Nikah",
         },
       },
+      wishes: [
+        {
+          id: "default-id",
+          initial: "tidak diketahui",
+          name: "Tamu Undangan",
+          timeLabel: "tidak diketahui",
+          message: "",
+          tone: "default",
+          align: "left",
+        },
+      ] as ProfessionalOneWish[],
     },
     url: `/preview/professional-1/${slug}/beranda`,
   };
