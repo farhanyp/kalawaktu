@@ -19,11 +19,11 @@ export function ProfessionalOneLandingPage({
   return (
     <main className="bg-surface font-body text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
       <ProfessionalOneHeroSection invitation={invitation} />
-      <ProfessionalOneEventSection />
+      <ProfessionalOneEventSection invitation={invitation} />
       <ProfessionalOneStorySection basePath={basePath} />
       <ProfessionalOneGallerySection basePath={basePath} />
       <ProfessionalOneGiftSection />
-      <ProfessionalOneRsvpSection />
+      <ProfessionalOneRsvpSection slug={invitation.slug} />
       <ProfessionalOneFooterSection />
     </main>
   );

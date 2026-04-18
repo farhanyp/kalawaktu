@@ -16,6 +16,7 @@ import type {
   SettingRow,
 } from "./types";
 import { resolveClientByUrl } from "./utils";
+import { DEFAULT_PREVIEW_SLUG as DEFAULT_SLUG } from "./types";
 
 export async function createClientByClientUrl(clientUrl: string, input: CreateClientInput) {
   const supabase = createServerSupabaseClient();
@@ -50,7 +51,9 @@ export async function createEventByClientUrl(clientUrl: string, input: CreateEve
       client_id: client.id,
       ...input,
     })
-    .select("id, client_id, name, type, event_date, url_map, address_alias, detail_location, created_at, updated_at")
+    .select(
+      "id, client_id, name, type, event_date, url_map, address_alias, detail_location, created_at, updated_at",
+    )
     .single<EventRow>();
 
   if (error) {
@@ -79,7 +82,10 @@ export async function createPhotoByClientUrl(clientUrl: string, input: CreatePho
   return data;
 }
 
-export async function createMediaPaymentByClientUrl(clientUrl: string, input: CreateMediaPaymentInput) {
+export async function createMediaPaymentByClientUrl(
+  clientUrl: string,
+  input: CreateMediaPaymentInput,
+) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -88,7 +94,9 @@ export async function createMediaPaymentByClientUrl(clientUrl: string, input: Cr
       client_id: client.id,
       ...input,
     })
-    .select("id, client_id, name, url_image, account_number, name_receiver, qr_code_url, created_at, updated_at")
+    .select(
+      "id, client_id, name, url_image, account_number, name_receiver, qr_code_url, created_at, updated_at",
+    )
     .single<MediaPaymentRow>();
 
   if (error) {
@@ -98,7 +106,10 @@ export async function createMediaPaymentByClientUrl(clientUrl: string, input: Cr
   return data;
 }
 
-export async function createInteractionByClientUrl(clientUrl: string, input: CreateInteractionInput) {
+export async function createInteractionByClientUrl(
+  clientUrl: string = DEFAULT_SLUG,
+  input: CreateInteractionInput,
+) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -106,8 +117,11 @@ export async function createInteractionByClientUrl(clientUrl: string, input: Cre
     .insert({
       client_id: client.id,
       ...input,
+      is_confirmed: true,
     })
-    .select("id, client_id, name, message, absence, total_guest, is_confirmed, created_at, updated_at")
+    .select(
+      "id, client_id, name, message, absence, total_guest, is_confirmed, created_at, updated_at",
+    )
     .single<InteractionRow>();
 
   if (error) {

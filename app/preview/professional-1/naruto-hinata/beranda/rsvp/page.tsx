@@ -1,5 +1,9 @@
 ﻿import { ProfessionalOneRsvpPage } from "@/app/_components/template-wedding-invitation/professional-1";
-import { DEFAULT_PREVIEW_SLUG, getInvitationBundleByClientUrl, getProfessionalOnePreviewData } from "../../data";
+import {
+  DEFAULT_PREVIEW_SLUG,
+  getInvitationBundleByClientUrl,
+  getProfessionalOnePreviewData,
+} from "../../data";
 
 export default async function PreviewProfessional1RsvpPage() {
   const [data, bundle] = await Promise.all([
@@ -17,5 +21,9 @@ export default async function PreviewProfessional1RsvpPage() {
     createdAt: item.created_at,
   }));
 
-  return <ProfessionalOneRsvpPage brandName={data.invitation.brandName} interactions={interactions} />;
+  console.log("Page RSVP: ", interactions);
+
+  return (
+    <ProfessionalOneRsvpPage brandName={data.invitation.brandName} interactions={interactions} />
+  );
 }

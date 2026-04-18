@@ -1,5 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { PreviewData, ChildRowId, ChildTableName, ClientRow, EventRow } from "./types";
+import {
+  type PreviewData,
+  type ChildRowId,
+  type ChildTableName,
+  type ClientRow,
+  type EventRow,
+  EVENT_TYPES,
+} from "./types";
 
 export function splitPartnerNames(clientName: string): [string, string] {
   const normalized = clientName.trim();
@@ -16,7 +23,7 @@ export function splitPartnerNames(clientName: string): [string, string] {
   return [normalized, "Pasangan"];
 }
 
-export function formatWeddingDateLabel(rawDate?: string | null) {
+export function formatDateLabel(rawDate?: string | null) {
   if (!rawDate) {
     return "Tanggal akan diumumkan";
   }
@@ -35,9 +42,15 @@ export function formatWeddingDateLabel(rawDate?: string | null) {
   }).format(eventDate);
 }
 
-export function buildTemplateData(client: ClientRow, event: EventRow | null): PreviewData {
+export function buildTemplateData(client: ClientRow, events: EventRow[] = []): PreviewData {
+  const akadEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.AKAD);
+  const resepsiEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.RESEPSI);
+
+  const mainEvent = resepsiEvent ?? akadEvent;
+  const venueLabel =
+    mainEvent?.address_alias ?? mainEvent?.detail_location ?? "Lokasi akan diumumkan";
+
   const [partnerOne, partnerTwo] = splitPartnerNames(client.name);
-  const venueLabel = event?.address_alias ?? event?.detail_location ?? "Lokasi akan diumumkan";
 
   return {
     metadata: {
@@ -49,8 +62,24 @@ export function buildTemplateData(client: ClientRow, event: EventRow | null): Pr
       brandName: "Kala Waktu",
       partnerOne,
       partnerTwo,
-      weddingDateLabel: formatWeddingDateLabel(event?.event_date),
+      weddingDateLabel: formatDateLabel(resepsiEvent?.event_date),
       venueLabel,
+      events: {
+        akad: {
+          time: formatDateLabel(akadEvent?.event_date), // Aman meskipun akadEvent undefined
+          venue: akadEvent?.detail_location ?? "Lokasi Akad Nikah",
+          description: "Keluarga Inti & Kerabat Dekat",
+        },
+        resepsi: {
+          time: formatDateLabel(resepsiEvent?.event_date), // Aman meskipun akadEvent undefined
+          venue: resepsiEvent?.detail_location ?? "Lokasi Akad Nikah",
+          description: "Keluarga Inti & Kerabat Dekat",
+        },
+        location: {
+          address: resepsiEvent?.detail_location ?? "Lokasi Akad Nikah",
+          googleMapsUrl: resepsiEvent?.url_map ?? "Lokasi Akad Nikah",
+        },
+      },
     },
     url: `/preview/professional-1/${client.url}/beranda`,
   };
@@ -77,6 +106,22 @@ export function buildFallbackTemplateData(slug: string): PreviewData {
       partnerTwo,
       weddingDateLabel: "Tanggal akan diumumkan",
       venueLabel: "Lokasi akan diumumkan",
+      events: {
+        akad: {
+          time: formatDateLabel(null), // Aman meskipun akadEvent undefined
+          venue: "Lokasi Akad Nikah",
+          description: "Keluarga Inti & Kerabat Dekat",
+        },
+        resepsi: {
+          time: formatDateLabel(null), // Aman meskipun akadEvent undefined
+          venue: "Lokasi Akad Nikah",
+          description: "Keluarga Inti & Kerabat Dekat",
+        },
+        location: {
+          address: "Lokasi Akad Nikah",
+          googleMapsUrl: "Lokasi Akad Nikah",
+        },
+      },
     },
     url: `/preview/professional-1/${slug}/beranda`,
   };
@@ -127,7 +172,9 @@ export async function assertChildRowOwnership(
     .maybeSingle<{ client_id: string | null }>();
 
   if (error) {
-    throw new Error(`Failed to validate ownership in table '${table}' for row '${id}': ${error.message}`);
+    throw new Error(
+      `Failed to validate ownership in table '${table}' for row '${id}': ${error.message}`,
+    );
   }
 
   if (!data) {

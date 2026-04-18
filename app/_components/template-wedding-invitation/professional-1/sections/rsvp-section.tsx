@@ -1,40 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProfessionalOneRsvpWishes } from "./rsvp-wishes";
 import type { AttendanceStatus, RsvpFormData, Wish } from "@/types/rsvp";
+import { getInteractionsAction, submitRsvpAction } from "../actions/rsvp-action";
 
-const initialWishes: Wish[] = [
-  {
-    id: "wish-raka-shinta",
-    initial: "R",
-    name: "Raka & Shinta",
-    timeLabel: "2 jam lalu",
-    message:
-      "Selamat ya Tiara & Siddiq! Semoga lancar sampai hari H dan jadi keluarga yang sakinah. Can't wait for the big day!",
-    tone: "default",
-    align: "left",
-  },
-  {
-    id: "wish-budi",
-    initial: "B",
-    name: "Budi Santoso",
-    timeLabel: "5 jam lalu",
-    message:
-      "Wishing you both a lifetime of happiness. Truly an inspiration to us all. See you guys soon!",
-    tone: "primary",
-    align: "right",
-  },
-  {
-    id: "wish-linda",
-    initial: "L",
-    name: "Linda",
-    timeLabel: "Kemarin",
-    message: "Akhirnya kapal ini berlabuh juga. Bahagia selalu ya kalian berdua!",
-    tone: "tertiary",
-    align: "left",
-  },
-];
+interface ProfessionalOneRsvpSectionProps {
+  slug: string;
+}
 
 const initialFormData: RsvpFormData = {
   name: "",
@@ -44,22 +17,48 @@ const initialFormData: RsvpFormData = {
 };
 
 function toneByAttendance(status: AttendanceStatus): Wish["tone"] {
-  if (status === "hadir") {
-    return "primary";
-  }
-
-  if (status === "ragu-ragu") {
-    return "tertiary";
-  }
-
+  if (status === "hadir") return "primary";
+  if (status === "ragu-ragu") return "tertiary";
   return "default";
 }
 
-export function ProfessionalOneRsvpSection() {
+export function ProfessionalOneRsvpSection({ slug }: ProfessionalOneRsvpSectionProps) {
   const [formData, setFormData] = useState<RsvpFormData>(initialFormData);
-  const [wishes, setWishes] = useState<Wish[]>(initialWishes);
+  const [wishes, setWishes] = useState<Wish[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Kunci penyimpanan unik per client undangan
+  const STORAGE_KEY = `kala_waktu_sent_ids_${slug}`;
+
+  // 1. Ambil data awal dan sinkronisasi dengan Local Storage
+  useEffect(() => {
+    async function fetchAndPersonalizeWishes() {
+      try {
+        const result = await getInteractionsAction(slug);
+
+        if (result.success) {
+          // Ambil daftar ID yang pernah dikirim dari perangkat ini
+          const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+          // Map ulang data: Default kiri, jika ID terdaftar maka kanan
+          const personalizedWishes = result.data.map((wish: Wish) => ({
+            ...wish,
+            align: sentIds.includes(wish.id) ? "right" : "left",
+          })) as Wish[];
+
+          setWishes(personalizedWishes);
+        }
+      } catch (err) {
+        console.error("Failed to load wishes:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (slug) fetchAndPersonalizeWishes();
+  }, [slug]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -78,23 +77,48 @@ export function ProfessionalOneRsvpSection() {
     }
 
     setIsSubmitting(true);
+    setFeedback("");
 
-    await new Promise((resolve) => window.setTimeout(resolve, 500));
+    try {
+      // 2. Kirim data ke Database
+      const result = await submitRsvpAction(slug, {
+        name,
+        message,
+        absence: formData.attendance === "tidak-hadir",
+        total_guest: Number(formData.guestCount),
+        is_confirmed: true,
+      });
 
-    const nextWish: Wish = {
-      id: `wish-${Date.now()}`,
-      initial: name.charAt(0).toUpperCase(),
-      name,
-      timeLabel: "Baru saja",
-      message,
-      tone: toneByAttendance(formData.attendance),
-      align: formData.attendance === "hadir" ? "right" : "left",
-    };
+      if (result.success && result.data) {
+        const newId = result.data.id;
 
-    setWishes((previous) => [nextWish, ...previous]);
-    setFormData(initialFormData);
-    setFeedback("RSVP berhasil dikirim. Terima kasih atas doa dan konfirmasinya.");
-    setIsSubmitting(false);
+        // 3. Simpan ID baru ke Local Storage agar kedepannya tetap di kanan
+        const sentIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        sentIds.push(newId);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sentIds));
+
+        // 4. Update UI secara Instan (set align ke 'right' karena ini milik user)
+        const newWish: Wish = {
+          id: newId,
+          initial: name.charAt(0).toUpperCase(),
+          name: name,
+          timeLabel: "Baru saja",
+          message: message,
+          tone: toneByAttendance(formData.attendance),
+          align: "right",
+        };
+
+        setWishes((prev) => [newWish, ...prev]);
+        setFormData(initialFormData);
+        setFeedback("Terima kasih! Doa Anda telah tersimpan.");
+      } else {
+        setFeedback(result.error || "Gagal mengirim. Silakan coba lagi.");
+      }
+    } catch (err) {
+      setFeedback("Terjadi kesalahan koneksi.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -102,10 +126,10 @@ export function ProfessionalOneRsvpSection() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-16 text-center">
           <h2 className="mb-4 font-headline text-4xl italic text-primary">
-            Konfirmasi Kehadiran &amp; Doa Restu
+            Konfirmasi Kehadiran & Doa Restu
           </h2>
           <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
-            Mohon Berikan Kabar Bahagia &amp; Harapan Anda
+            Mohon Berikan Kabar Bahagia & Harapan Anda
           </p>
         </div>
 
@@ -114,8 +138,8 @@ export function ProfessionalOneRsvpSection() {
             <div className="relative h-48 md:h-auto md:w-1/3">
               <img
                 className="h-full w-full object-cover"
-                alt="elegant invitation card"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd69x4Df6cF6_1d-SrwKbgHYl_Wd9uexPI246z43n9vwxdrc2oJNMl3IPMbH8ZGeqIBx_x8ErIbfSCeUlm220xdhz5kP-n8neUPBpZPtEdXAsCfL1q1yQSZPSYjEOHjXOWb33yO9B-EbwN5DRB8ELdX444Vuxd3GY3OFZwj4TrvZGotK3NeQTbUqjlRamKx3QYT91XJIlWZA0gcTVGdThFvbq8yg1TYVE0ZgpATKnWC3E3UE9BfWMATB4XNdHqKpqxFz3NgP_Br9GQ"
+                alt="RSVP Background"
+                src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
               />
               <div className="absolute inset-0 bg-primary/20" />
             </div>
@@ -130,10 +154,9 @@ export function ProfessionalOneRsvpSection() {
                     className="w-full rounded-lg border-none bg-white/10 p-4 text-white placeholder-white/40 focus:ring-2 focus:ring-on-primary"
                     placeholder="Masukkan nama Anda"
                     type="text"
+                    required
                     value={formData.name}
-                    onChange={(event) =>
-                      setFormData((previous) => ({ ...previous, name: event.target.value }))
-                    }
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
 
@@ -145,11 +168,8 @@ export function ProfessionalOneRsvpSection() {
                     <select
                       className="w-full rounded-lg border-none bg-white/10 p-4 text-white focus:ring-2 focus:ring-on-primary"
                       value={formData.guestCount}
-                      onChange={(event) =>
-                        setFormData((previous) => ({
-                          ...previous,
-                          guestCount: event.target.value as RsvpFormData["guestCount"],
-                        }))
+                      onChange={(e) =>
+                        setFormData({ ...formData, guestCount: e.target.value as any })
                       }
                     >
                       <option className="text-on-surface" value="1">
@@ -168,11 +188,8 @@ export function ProfessionalOneRsvpSection() {
                     <select
                       className="w-full rounded-lg border-none bg-white/10 p-4 text-white focus:ring-2 focus:ring-on-primary"
                       value={formData.attendance}
-                      onChange={(event) =>
-                        setFormData((previous) => ({
-                          ...previous,
-                          attendance: event.target.value as AttendanceStatus,
-                        }))
+                      onChange={(e) =>
+                        setFormData({ ...formData, attendance: e.target.value as AttendanceStatus })
                       }
                     >
                       <option className="text-on-surface" value="hadir">
@@ -190,38 +207,44 @@ export function ProfessionalOneRsvpSection() {
 
                 <div>
                   <label className="mb-2 block text-xs font-bold uppercase tracking-widest opacity-70">
-                    Ucapan &amp; Doa Restu
+                    Ucapan & Doa Restu
                   </label>
                   <textarea
                     className="w-full rounded-lg border-none bg-white/10 p-4 text-white placeholder-white/40 focus:ring-2 focus:ring-on-primary"
                     placeholder="Tuliskan harapan Anda untuk kami..."
                     rows={3}
+                    required
                     value={formData.message}
-                    onChange={(event) =>
-                      setFormData((previous) => ({ ...previous, message: event.target.value }))
-                    }
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
                 </div>
 
-                {feedback ? (
-                  <p className="rounded-lg bg-white/10 px-4 py-3 text-sm text-white/90">
+                {feedback && (
+                  <p className="rounded-lg bg-white/20 px-4 py-3 text-sm text-white transition-all">
                     {feedback}
                   </p>
-                ) : null}
+                )}
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="mt-2 w-full rounded-xl bg-secondary py-4 font-bold uppercase tracking-widest text-on-secondary transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="mt-2 w-full rounded-xl bg-secondary py-4 font-bold uppercase tracking-widest text-on-secondary shadow-lg transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-70"
                 >
-                  {isSubmitting ? "Mengirim..." : "Kirim Konfirmasi"}
+                  {isSubmitting ? "Sedang Mengirim..." : "Kirim Konfirmasi"}
                 </button>
               </form>
             </div>
           </div>
         </div>
 
-        <ProfessionalOneRsvpWishes wishes={wishes} />
+        {/* Wishes List */}
+        {isLoading ? (
+          <div className="py-20 text-center text-on-surface-variant opacity-60 animate-pulse">
+            Memasukkan doa-doa tamu...
+          </div>
+        ) : (
+          <ProfessionalOneRsvpWishes wishes={wishes} />
+        )}
       </div>
     </section>
   );

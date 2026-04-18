@@ -2,6 +2,13 @@ import type { ProfessionalOneTemplateData } from "@/app/_components/template-wed
 
 export const DEFAULT_PREVIEW_SLUG = "naruto-hinata";
 
+export const EVENT_TYPES = {
+  AKAD: "AKAD",
+  RESEPSI: "RESEPSI",
+} as const;
+
+export type EventType = (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
+
 export type ClientRow = {
   id: string;
   name: string;
@@ -14,7 +21,7 @@ export type EventRow = {
   id: string;
   client_id: string;
   name: string;
-  type: string | null;
+  type: EventType | string | null;
   event_date: string;
   url_map: string | null;
   address_alias: string | null;

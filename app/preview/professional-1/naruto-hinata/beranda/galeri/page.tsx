@@ -1,5 +1,9 @@
 ﻿import { ProfessionalOneGaleriPage } from "@/app/_components/template-wedding-invitation/professional-1";
-import { DEFAULT_PREVIEW_SLUG, getInvitationBundleByClientUrl, getProfessionalOnePreviewData } from "../../data";
+import {
+  DEFAULT_PREVIEW_SLUG,
+  getInvitationBundleByClientUrl,
+  getProfessionalOnePreviewData,
+} from "../../data";
 
 export default async function PreviewProfessional1GaleriPage() {
   const [data, bundle] = await Promise.all([
@@ -12,6 +16,8 @@ export default async function PreviewProfessional1GaleriPage() {
     name: item.name,
     url: item.url,
   }));
+
+  console.log("Page photos: ", photos);
 
   return <ProfessionalOneGaleriPage brandName={data.invitation.brandName} photos={photos} />;
 }

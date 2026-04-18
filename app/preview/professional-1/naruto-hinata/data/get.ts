@@ -17,7 +17,9 @@ async function getEventsByClientId(clientId: string) {
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase
     .from("events")
-    .select("id, client_id, name, type, event_date, url_map, address_alias, detail_location, created_at, updated_at")
+    .select(
+      "id, client_id, name, type, event_date, url_map, address_alias, detail_location, created_at, updated_at",
+    )
     .eq("client_id", clientId)
     .order("event_date", { ascending: true });
 
@@ -59,7 +61,9 @@ export async function getMediaPaymentsByClientUrl(clientUrl: string) {
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
     .from("media_payments")
-    .select("id, client_id, name, url_image, account_number, name_receiver, qr_code_url, created_at, updated_at")
+    .select(
+      "id, client_id, name, url_image, account_number, name_receiver, qr_code_url, created_at, updated_at",
+    )
     .eq("client_id", client.id)
     .order("id", { ascending: true });
 
@@ -75,7 +79,9 @@ export async function getInteractionsByClientUrl(clientUrl: string) {
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
     .from("interactions")
-    .select("id, client_id, name, message, absence, total_guest, is_confirmed, created_at, updated_at")
+    .select(
+      "id, client_id, name, message, absence, total_guest, is_confirmed, created_at, updated_at",
+    )
     .eq("client_id", client.id)
     .order("created_at", { ascending: false });
 
@@ -154,15 +160,15 @@ export const getProfessionalOnePreviewData = cache(
 
       const { data: event, error: eventError } = await supabase
         .from("events")
-        .select("id, client_id, name, type, event_date, url_map, address_alias, detail_location, created_at, updated_at")
+        .select(
+          "id, client_id, name, type, event_date, url_map, address_alias, detail_location, created_at, updated_at",
+        )
         .eq("client_id", client.id)
-        .order("event_date", { ascending: true })
-        .limit(1)
-        .maybeSingle<EventRow>();
+        .order("event_date", { ascending: true });
 
       if (eventError) {
         console.error(`Failed to fetch event for client '${client.id}': ${eventError.message}`);
-        return buildTemplateData(client, null);
+        return buildTemplateData(client, []);
       }
 
       return buildTemplateData(client, event);
