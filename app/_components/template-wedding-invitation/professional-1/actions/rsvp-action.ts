@@ -15,7 +15,7 @@ export async function submitRsvpAction(clientUrl: string, input: CreateInteracti
     const data = await createInteractionByClientUrl(clientUrl, input);
 
     // Revalidasi cache agar data terbaru masuk ke server-side rendering jika diperlukan
-    revalidatePath(`/preview/professional-1/${clientUrl}`);
+    revalidatePath(`/preview/professional-1/${clientUrl}/beranda`);
 
     return { success: true, data };
   } catch (error) {
