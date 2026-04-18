@@ -30,17 +30,17 @@ async function getEventsByClientId(clientId: string) {
   return (data ?? []) as EventRow[];
 }
 
-export async function getClientByClientUrl(clientUrl: string) {
+export async function getClientByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const supabase = createServerSupabaseClient();
   return resolveClientByUrl(supabase, clientUrl);
 }
 
-export async function getEventsByClientUrl(clientUrl: string) {
+export async function getEventsByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const client = await getClientByClientUrl(clientUrl);
   return getEventsByClientId(client.id);
 }
 
-export async function getPhotosByClientUrl(clientUrl: string) {
+export async function getPhotosByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -56,7 +56,7 @@ export async function getPhotosByClientUrl(clientUrl: string) {
   return (data ?? []) as PhotoRow[];
 }
 
-export async function getMediaPaymentsByClientUrl(clientUrl: string) {
+export async function getMediaPaymentsByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -74,7 +74,7 @@ export async function getMediaPaymentsByClientUrl(clientUrl: string) {
   return (data ?? []) as MediaPaymentRow[];
 }
 
-export async function getInteractionsByClientUrl(clientUrl: string) {
+export async function getInteractionsByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -92,7 +92,7 @@ export async function getInteractionsByClientUrl(clientUrl: string) {
   return (data ?? []) as InteractionRow[];
 }
 
-export async function getLoveStoriesByClientUrl(clientUrl: string) {
+export async function getLoveStoriesByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -108,7 +108,7 @@ export async function getLoveStoriesByClientUrl(clientUrl: string) {
   return (data ?? []) as LoveStoryRow[];
 }
 
-export async function getSettingByClientUrl(clientUrl: string) {
+export async function getSettingByClientUrl(clientUrl: string = DEFAULT_SLUG) {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
   const { data, error } = await supabase
@@ -124,7 +124,9 @@ export async function getSettingByClientUrl(clientUrl: string) {
   return data;
 }
 
-export async function getInvitationBundleByClientUrl(clientUrl: string): Promise<InvitationBundle> {
+export async function getInvitationBundleByClientUrl(
+  clientUrl: string = DEFAULT_SLUG,
+): Promise<InvitationBundle> {
   const supabase = createServerSupabaseClient();
   const client = await resolveClientByUrl(supabase, clientUrl);
 
