@@ -1,6 +1,7 @@
 ﻿import { InvitationGate } from "@/app/_components/template-wedding-invitation/professional-1";
-import { professional_1TemplateData } from "./template-data";
+import { getProfessionalOnePreviewData } from "./data";
 
-export default function PreviewProfessional1Page() {
-  return <InvitationGate data={professional_1TemplateData} />;
+export default async function PreviewProfessional1Page() {
+  const data = await getProfessionalOnePreviewData();
+  return <InvitationGate data={data} />;
 }
