@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import type { Wish } from "@/types/rsvp";
+import { ProfessionalOneWish } from "../core/types";
 
 interface RsvpWishesProps {
-  wishes: Wish[];
+  wishes: ProfessionalOneWish[];
 }
 
 export function ProfessionalOneRsvpWishes({ wishes }: RsvpWishesProps) {
