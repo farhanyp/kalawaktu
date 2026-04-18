@@ -1,0 +1,140 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { PreviewData, ChildRowId, ChildTableName, ClientRow, EventRow } from "./types";
+
+export function splitPartnerNames(clientName: string): [string, string] {
+  const normalized = clientName.trim();
+  const separators = /\s*(?:&|dan|and)\s*/i;
+  const parts = normalized
+    .split(separators)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length >= 2) {
+    return [parts[0], parts[1]];
+  }
+
+  return [normalized, "Pasangan"];
+}
+
+export function formatWeddingDateLabel(rawDate?: string | null) {
+  if (!rawDate) {
+    return "Tanggal akan diumumkan";
+  }
+
+  const eventDate = new Date(rawDate);
+
+  if (Number.isNaN(eventDate.getTime())) {
+    return "Tanggal akan diumumkan";
+  }
+
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    timeZone: "Asia/Jakarta",
+  }).format(eventDate);
+}
+
+export function buildTemplateData(client: ClientRow, event: EventRow | null): PreviewData {
+  const [partnerOne, partnerTwo] = splitPartnerNames(client.name);
+  const venueLabel = event?.address_alias ?? event?.detail_location ?? "Lokasi akan diumumkan";
+
+  return {
+    metadata: {
+      title: `${partnerOne} & ${partnerTwo} | Kala Waktu`,
+      description: `Undangan digital pernikahan untuk ${partnerOne} dan ${partnerTwo}.`,
+    },
+    invitation: {
+      slug: client.url,
+      brandName: "Kala Waktu",
+      partnerOne,
+      partnerTwo,
+      weddingDateLabel: formatWeddingDateLabel(event?.event_date),
+      venueLabel,
+    },
+    url: `/preview/professional-1/${client.url}/beranda`,
+  };
+}
+
+function toTitleCase(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
+
+export function buildFallbackTemplateData(slug: string): PreviewData {
+  const names = slug.split("-").map(toTitleCase).filter(Boolean);
+  const partnerOne = names[0] ?? "Calon Mempelai";
+  const partnerTwo = names[1] ?? "Pasangan";
+
+  return {
+    metadata: {
+      title: `${partnerOne} & ${partnerTwo} | Kala Waktu`,
+      description: `Undangan digital pernikahan untuk ${partnerOne} dan ${partnerTwo}.`,
+    },
+    invitation: {
+      slug,
+      brandName: "Kala Waktu",
+      partnerOne,
+      partnerTwo,
+      weddingDateLabel: "Tanggal akan diumumkan",
+      venueLabel: "Lokasi akan diumumkan",
+    },
+    url: `/preview/professional-1/${slug}/beranda`,
+  };
+}
+
+export async function resolveClientByUrl(
+  supabase: SupabaseClient,
+  clientUrl: string,
+  options: { allowMissing: true },
+): Promise<ClientRow | null>;
+export async function resolveClientByUrl(
+  supabase: SupabaseClient,
+  clientUrl: string,
+  options?: { allowMissing?: false },
+): Promise<ClientRow>;
+export async function resolveClientByUrl(
+  supabase: SupabaseClient,
+  clientUrl: string,
+  options?: { allowMissing?: boolean },
+) {
+  const { data, error } = await supabase
+    .from("clients")
+    .select("id, name, url, created_at, updated_at")
+    .eq("url", clientUrl)
+    .maybeSingle<ClientRow>();
+
+  if (error) {
+    throw new Error(`Failed to resolve client by url '${clientUrl}': ${error.message}`);
+  }
+
+  if (!data && !options?.allowMissing) {
+    throw new Error(`Client with url '${clientUrl}' was not found.`);
+  }
+
+  return data as ClientRow | null;
+}
+
+export async function assertChildRowOwnership(
+  supabase: SupabaseClient,
+  table: ChildTableName,
+  id: ChildRowId,
+  clientId: string,
+) {
+  const { data, error } = await supabase
+    .from(table)
+    .select("client_id")
+    .eq("id", id)
+    .maybeSingle<{ client_id: string | null }>();
+
+  if (error) {
+    throw new Error(`Failed to validate ownership in table '${table}' for row '${id}': ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error(`Row '${id}' in table '${table}' was not found.`);
+  }
+
+  if (data.client_id !== clientId) {
+    throw new Error(`Row '${id}' in table '${table}' does not belong to the requested client.`);
+  }
+}

@@ -1,10 +1,17 @@
-import { FiArrowUpRight, FiDownload, FiHeart } from "react-icons/fi";
+﻿import { FiArrowUpRight, FiDownload, FiHeart } from "react-icons/fi";
+
+type GalleryPhoto = {
+  id: number;
+  name: string | null;
+  url: string;
+};
 
 type ProfessionalOneGaleriPageProps = {
   brandName: string;
+  photos?: GalleryPhoto[];
 };
 
-const masonryImages = [
+const fallbackImages = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBipSBFGHBakGcXmikqoBflVWp80EZOB8TlxT0smJTx3xGHA4ySTbMFXReGUUnaSMo-JTVFKatfJwUVFXVjrxIbcR_xbuU98XMmPRNVUriYP9_ZsdapVY02J0CMjjwQAtWSWW-KyfB59hZ3JR2i_V7ftR-bXUplvCQg-rvDK6DsK1xput9cLKF258egGYnlT2OuA2eIoCoJAVzXN8oxKUbkSftD2elellPpmHP2HCUMNUrMmvfGTXPdMxcGy5gqSbV6FWTcepIx8HbJ",
   "https://lh3.googleusercontent.com/aida-public/AB6AXuA8u8zGB3ckAx1xvO-k_2aPAy6MqAdtFqwqg-_LYmgeGu1n6p3DT4zhTRq0OboViUVWr78M9ehtX7m63wNrHChyF-l0U4w33wpIKTfX821g0HPjkCF0J_DY8dZSZMDWyR8vvWygqyQuB8aYx8VLpteY0Z3Bt6mB7M4BaDUvkSNn146oeEnzK2sVTpAtoAPYqrvcVAruHeIOOpuV1OBqkuz7NtDmtmzh7gPTkDEhMkoR-e8m0UZF1XHV8BurXB20ZGr6b3g8m4vSRQYd",
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBvtMFdSox3g8KK9wKQht24_bCBRxIfbNLncZnvQCBwg-Xnhm-7i5hGLB1JN0LD77Cq09oUeMvnys-BqneNO5025nT1e1qA4n2Xxyv98EHEGb1gMSIy3Mjo19F8aoDYdpz9F7lniq7y5XYWsrWEcR5x8qM3KH1-_KAP_6sbHdGnTQvzlxEBLyiUPCaAubP0y0erSZ4qZifBMVNcbelS9LXL_isG7egElZcwoSpoLEzH1K4YBIVxpakHhy3PczMB0RIQAgTf8bqkv-gR",
@@ -14,121 +21,44 @@ const masonryImages = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuDyqtWQnerO7QkWVrEiuGP0kJmqUGad6baTNxztcoFzcCH-ma-KYLxEDp4NM4QWs0MyEU-IF7NbHECP007h0A9JroZAXghxAIDYbo-xyf3bHFawxJVlMt0Dyd-vdoQHz4j83qffksi9UvLIZIuy6JmAV-_bjSCN6MyxmfmUI71mQxoI0nROpQRNtHSjLNBFrxV7A3CEPe_V6ffHQw2W4Ff_Jw80AUr23kEpq64EfAl5mcn6uiTaWh-mCxHzXmlxDQkUgsSEWz0QbkJI",
 ];
 
-export function ProfessionalOneGaleriPage({ brandName }: ProfessionalOneGaleriPageProps) {
+export function ProfessionalOneGaleriPage({ brandName, photos = [] }: ProfessionalOneGaleriPageProps) {
   const cloudGalleryUrl = "https://drive.google.com/drive/folders/";
   const photographerWhatsAppUrl =
     "https://wa.me/6281234567890?text=Halo%20kak%2C%20saya%20ingin%20bertanya%20soal%20dokumentasi%20foto%20wedding.";
 
+  const galleryItems = photos.length > 0
+    ? photos.map((photo) => ({ id: photo.id, url: photo.url, label: photo.name ?? "Wedding Moment" }))
+    : fallbackImages.map((url, index) => ({ id: index + 1, url, label: `Photo ${index + 1}` }));
+
   return (
     <main className="bg-background font-body text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
       <div className="mx-auto max-w-7xl px-6 pt-32 pb-24 md:px-12">
-        <header className="relative mb-24 md:mb-40">
-          <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-12">
-            <div className="md:col-span-7">
-              <h1 className="font-headline mb-8 text-6xl leading-[0.9] tracking-tighter text-primary md:text-8xl">
-                Fragmen <br /> <span className="ml-12 text-secondary italic">Kebahagiaan</span>
-              </h1>
-              <p className="max-w-md text-lg leading-relaxed text-on-surface-variant">
-                Kumpulan momen yang tertangkap dalam lensa, merangkum perjalanan cinta kami yang
-                dikurasi secara editorial.
-              </p>
-            </div>
-            <div className="relative md:col-span-5">
-              <div className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-surface-container-high shadow-sm">
-                <img
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  alt="candid wedding couple walking through a sunlit pine forest"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3ZdI1i1KeSPccMJAfTNZ3K9PZd8NNjM4f7jVzDpk4yjHs8eyoi2rI9yZ5yMvXN7Tfy5l3RyhdPwZQOJayvb0YBhrWTB61eqySJRK5IIiSQRa39gwc_4pjsZGURCWQIBbXTqNxu1kIMGthyQPod03RvnHOUtn0VnoNfoadEEm6dmIasJRbG18s6S5R8YQ8h_YfGZYXrC6LcWQprU44ilwFZI49Q0pBE5_koXc3ZMwoBdBosV4vAhhN1vwNJ9fLTuxJwKy7j-lvhbCR"
-                />
-              </div>
-              <div className="absolute -bottom-8 -left-8 hidden rounded-xl border border-white/20 bg-surface/80 p-6 shadow-xl backdrop-blur-md md:-left-16 md:block">
-                <span className="font-headline text-2xl text-primary-dim italic">The Union Vol. 01</span>
-              </div>
-            </div>
-          </div>
+        <header className="mb-14">
+          <h1 className="font-headline mb-6 text-6xl leading-[0.9] tracking-tighter text-primary md:text-8xl">
+            Fragmen <span className="ml-4 text-secondary italic">Kebahagiaan</span>
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-on-surface-variant">
+            Kumpulan momen yang tertangkap dalam lensa, merangkum perjalanan cinta kami yang
+            dikurasi secara editorial.
+          </p>
         </header>
 
-        <section className="mb-32 columns-1 gap-8 md:columns-2 lg:columns-3">
-          <div className="mb-8 break-inside-avoid">
-            <div className="group relative overflow-hidden rounded-lg bg-surface-container-low transition-all duration-500">
-              <img className="w-full object-cover transition-opacity group-hover:opacity-90" alt="wedding rings on a dark olive velvet cushion" src={masonryImages[0]} />
-              <div className="pointer-events-none absolute inset-0 bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="translate-y-2 transform p-4 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
-                <span className="font-label text-xs uppercase tracking-widest text-primary">Detail</span>
+        <section className="mb-20 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {galleryItems.map((item, index) => (
+            <article key={item.id} className="group overflow-hidden rounded-2xl bg-surface-container-low">
+              <div className={index % 3 === 0 ? "aspect-[4/5]" : "aspect-square"}>
+                <img
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  alt={item.label}
+                  src={item.url}
+                />
               </div>
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="group relative overflow-hidden rounded-lg bg-surface-container-low transition-all duration-500">
-              <img className="w-full object-cover transition-opacity group-hover:opacity-90" alt="bride looking through a window in a vintage dress" src={masonryImages[1]} />
-              <div className="p-4">
-                <p className="font-headline text-xl text-primary-dim italic">Pre-Wedding Bloom</p>
+              <div className="flex items-center justify-between px-4 py-3">
+                <p className="truncate text-sm text-on-surface-variant">{item.label}</p>
+                <FiHeart className="text-primary" />
               </div>
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="aspect-square rounded-lg bg-primary p-12">
-              <FiHeart className="mb-8 text-4xl text-on-primary" />
-              <h3 className="font-headline text-3xl leading-tight text-on-primary">
-                Momen yang terhenti dalam waktu.
-              </h3>
-              <p className="font-label mt-6 text-sm uppercase tracking-tighter text-on-primary/60 italic">
-                Editorial Edition
-              </p>
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="group relative overflow-hidden rounded-lg bg-surface-container-low transition-all duration-500">
-              <img className="w-full object-cover transition-transform duration-700 group-hover:scale-105" alt="minimalist white wedding cake with olive branch decoration" src={masonryImages[2]} />
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="group relative">
-              <div className="aspect-video overflow-hidden rounded-lg">
-                <img className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0" alt="black and white photo of wedding guests laughing" src={masonryImages[3]} />
-              </div>
-              <div className="mt-4 flex items-center gap-3">
-                <div className="h-px flex-1 bg-outline-variant/30" />
-                <span className="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant">
-                  The Reception
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="group relative overflow-hidden rounded-lg bg-surface-container-low transition-all duration-500">
-              <img className="w-full object-cover transition-opacity group-hover:opacity-90" alt="groom fixing his cufflinks in front of a mirror" src={masonryImages[4]} />
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="group aspect-square overflow-hidden rounded-lg bg-surface-container-high">
-                <img className="h-full w-full object-cover transition-transform group-hover:scale-110" alt="close up of bridal bouquet" src={masonryImages[5]} />
-              </div>
-              <div className="flex aspect-square items-center justify-center rounded-lg bg-secondary-container p-6 text-center">
-                <span className="font-headline text-lg text-on-secondary-container italic">
-                  &quot;Ever thine, ever mine, ever ours.&quot;
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-8 break-inside-avoid">
-            <div className="group relative overflow-hidden rounded-lg bg-surface-container-low shadow-xl shadow-primary/5 transition-all duration-500">
-              <img className="w-full object-cover" alt="wedding aisle outdoors with minimalist wooden chairs" src={masonryImages[6]} />
-              <div className="absolute top-4 right-4 rounded-full border border-white/20 bg-white/10 px-4 py-1 backdrop-blur-md">
-                <span className="font-label text-[10px] uppercase tracking-widest text-white">
-                  Venue Decor
-                </span>
-              </div>
-            </div>
-          </div>
+            </article>
+          ))}
         </section>
 
         <section className="relative mt-20 overflow-hidden rounded-[2rem] bg-surface-container-low px-8 py-24">
