@@ -29,9 +29,9 @@ export async function submitRsvpAction(clientUrl: string, input: CreateInteracti
  * Action baru untuk mengambil semua ucapan (Interactions)
  * dan mengubahnya menjadi format 'Wish' untuk UI
  */
-export async function getInteractionsAction(clientUrl: string) {
+export async function getInteractionsAction() {
   try {
-    const data = await getInteractionsByClientUrl(clientUrl);
+    const data = await getInteractionsByClientUrl();
 
     // Transformasi data dari Database (InteractionRow) ke format UI (Wish)
     const mappedWishes: Wish[] = data.map((item) => ({

@@ -36,7 +36,7 @@ export function ProfessionalOneRsvpSection({ slug }: ProfessionalOneRsvpSectionP
   useEffect(() => {
     async function fetchAndPersonalizeWishes() {
       try {
-        const result = await getInteractionsAction(slug);
+        const result = await getInteractionsAction();
 
         if (result.success) {
           // Ambil daftar ID yang pernah dikirim dari perangkat ini
