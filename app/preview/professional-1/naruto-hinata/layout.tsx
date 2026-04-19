@@ -1,16 +1,16 @@
-﻿import type { Metadata } from "next";
-import { buildProfessionalOneMetadata } from "@/app/_components/template-wedding-invitation/professional-1";
+﻿import { ProfessionalOneLayout } from "@/app/_components/template-wedding-invitation/professional-1";
 import { getProfessionalOnePreviewData } from "./data";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const data = await getProfessionalOnePreviewData();
-  return buildProfessionalOneMetadata(data.metadata);
-}
-
-export default function PreviewProfessional1Layout({
+export default async function PreviewProfessional1BerandaLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  const data = await getProfessionalOnePreviewData();
+
+  return (
+    <ProfessionalOneLayout basePath={data.url} brandLabel={data.invitation.brandName}>
+      {children}
+    </ProfessionalOneLayout>
+  );
 }

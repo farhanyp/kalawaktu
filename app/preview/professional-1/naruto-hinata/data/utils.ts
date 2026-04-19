@@ -96,7 +96,7 @@ export function buildTemplateData(
         align: "left",
       })),
     },
-    url: `/preview/professional-1/${client.url}/beranda`,
+    url: `/preview/professional-1/${client.url}`,
   };
 }
 
@@ -149,7 +149,7 @@ export function buildFallbackTemplateData(slug: string): PreviewData {
         },
       ] as ProfessionalOneWish[],
     },
-    url: `/preview/professional-1/${slug}/beranda`,
+    url: `/preview/professional-1/${slug}`,
   };
 }
 

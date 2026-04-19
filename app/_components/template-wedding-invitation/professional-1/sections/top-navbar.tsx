@@ -174,7 +174,7 @@ export function ProfessionalOneTopNavbar({ basePath, brandLabel = "Kala Waktu" }
         className={cn(
           "overflow-hidden bg-stone-50 transition-all duration-300 ease-out md:hidden",
           open
-            ? "max-h-[30rem] border-t border-stone-200/70 px-6 pb-6 pt-4 opacity-100"
+            ? "max-h-120 border-t border-stone-200/70 px-6 pb-6 pt-4 opacity-100"
             : "max-h-0 px-6 pb-0 pt-0 opacity-0 pointer-events-none",
         )}
       >

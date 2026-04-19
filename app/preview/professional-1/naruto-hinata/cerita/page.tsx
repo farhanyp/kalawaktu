@@ -3,7 +3,7 @@ import {
   DEFAULT_PREVIEW_SLUG,
   getInvitationBundleByClientUrl,
   getProfessionalOnePreviewData,
-} from "../../data";
+} from "../data";
 
 export default async function PreviewProfessional1CeritaPage() {
   const [data, bundle] = await Promise.all([
