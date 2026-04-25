@@ -72,9 +72,9 @@ export function ProfessionalOneRsvpWishes({ wishes, clientId }: RsvpWishesProps)
       </h3>
 
       <div className="relative">
-        <div className="pointer-events-none absolute top-0 right-0 left-0 z-10 h-8 bg-linear-to-b from-surface-container to-transparent" />
-        <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-8 bg-linear-to-t from-surface-container to-transparent" />
-        <div className="max-h-152 space-y-6 overflow-y-auto pr-2 [scrollbar-color:rgba(159,66,38,0.55)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-secondary/60 [&::-webkit-scrollbar-thumb]:hover:bg-secondary [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2">
+        <div className="pointer-events-none absolute top-0 right-0 left-0 z-10 h-8 bg-linear-to-b " />
+        <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-8 bg-linear-to-t " />
+        <div className="max-h-100 space-y-6 overflow-y-auto pr-2 [scrollbar-color:rgba(159,66,38,0.55)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-secondary/60 [&::-webkit-scrollbar-thumb]:hover:bg-secondary [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2">
           {allWishes.map((wish) => {
             const isRight = wish.align === "right";
             const isPrimary = wish.tone === "primary";
