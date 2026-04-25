@@ -9,15 +9,16 @@ import { ProfessionalOneGiftSection } from "../sections/gift-section";
 import { ProfessionalOneRsvpSection } from "../sections/rsvp-section";
 import { ProfessionalOneFooterSection } from "../sections/footer-section";
 import { InvitationGate } from "../invitation-gate";
-import type { ProfessionalOneInvitationData } from "../core/types";
+import type { ProfessionalOneGuestData, ProfessionalOneInvitationData } from "../core/types";
 import { getCookie, setCookie } from "../utils";
 
 type Props = {
   basePath: string;
   invitation: ProfessionalOneInvitationData;
+  guest: ProfessionalOneGuestData;
 };
 
-export function ProfessionalOneLandingPage({ basePath, invitation }: Props) {
+export function ProfessionalOneLandingPage({ basePath, invitation, guest }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -63,7 +64,7 @@ export function ProfessionalOneLandingPage({ basePath, invitation }: Props) {
           isOpen ? "-translate-y-full pointer-events-none" : "translate-y-0"
         }`}
       >
-        <InvitationGate invitation={invitation} onOpen={handleOpenInvitation} />
+        <InvitationGate invitation={invitation} onOpen={handleOpenInvitation} guest={guest} />
       </div>
 
       <main
@@ -76,7 +77,7 @@ export function ProfessionalOneLandingPage({ basePath, invitation }: Props) {
         <ProfessionalOneStorySection basePath={basePath} />
         <ProfessionalOneGallerySection basePath={basePath} />
         <ProfessionalOneGiftSection />
-        <ProfessionalOneRsvpSection invitation={invitation} />
+        <ProfessionalOneRsvpSection invitation={invitation} guest={guest} />
         <ProfessionalOneFooterSection />
       </main>
     </div>

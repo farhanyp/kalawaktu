@@ -5,6 +5,7 @@ import { ProfessionalOneRsvpWishes } from "./rsvp-wishes";
 import { submitRsvpAction } from "../actions/rsvp-action";
 import {
   AttendanceStatus,
+  ProfessionalOneGuestData,
   ProfessionalOneInvitationData,
   ProfessionalOneRsvpFormData,
   ProfessionalOneWish,
@@ -12,6 +13,7 @@ import {
 
 type RSVPSectionProps = {
   invitation: ProfessionalOneInvitationData;
+  guest: ProfessionalOneGuestData;
 };
 
 const initialFormData: ProfessionalOneRsvpFormData = {
@@ -27,7 +29,7 @@ function toneByAttendance(status: AttendanceStatus): ProfessionalOneWish["tone"]
   return "default";
 }
 
-export function ProfessionalOneRsvpSection({ invitation }: RSVPSectionProps) {
+export function ProfessionalOneRsvpSection({ invitation, guest }: RSVPSectionProps) {
   const { slug, wishes: serverWishes } = invitation;
 
   const [formData, setFormData] = useState<ProfessionalOneRsvpFormData>(initialFormData);
@@ -138,7 +140,7 @@ export function ProfessionalOneRsvpSection({ invitation }: RSVPSectionProps) {
                     placeholder="Masukkan nama Anda"
                     type="text"
                     required
-                    value={formData.name}
+                    value={guest.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>

@@ -34,7 +34,13 @@ export interface ProfessionalOneWish {
   align: WishAlign;
 }
 
+export type ProfessionalOneGuestData = {
+  name: string;
+  slug: string;
+};
+
 export type ProfessionalOneInvitationData = {
+  client_id: string;
   slug: string;
   brandName: string;
   partnerOne: string;

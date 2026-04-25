@@ -36,9 +36,6 @@ export function formatFriendlyDate(dateString?: string | Date) {
     .replace(".", ":");
 }
 
-/**
- * Mengambil nilai cookie berdasarkan nama
- */
 export const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
 
@@ -52,9 +49,6 @@ export const getCookie = (name: string): string | null => {
   return null;
 };
 
-/**
- * Menyimpan cookie dengan durasi menit
- */
 export const setCookie = (name: string, value: string, minutes: number): void => {
   if (typeof document === "undefined") return;
 

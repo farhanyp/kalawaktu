@@ -1,15 +1,16 @@
 "use client";
 
 import { FiMail } from "react-icons/fi";
-import { ProfessionalOneInvitationData } from "./core/types";
+import { ProfessionalOneGuestData, ProfessionalOneInvitationData } from "./core/types";
 import Image from "next/image";
 
 type GateSectionProps = {
   invitation: ProfessionalOneInvitationData;
   onOpen: () => void;
+  guest: ProfessionalOneGuestData;
 };
 
-export function InvitationGate({ invitation, onOpen }: GateSectionProps) {
+export function InvitationGate({ invitation, onOpen, guest }: GateSectionProps) {
   return (
     <div className="relative h-screen w-full overflow-hidden bg-stone-900">
       <header className="fixed top-0 left-0 z-50 flex w-full items-center justify-between bg-transparent px-6 py-4 font-serif italic text-stone-100 backdrop-blur-sm md:px-8 md:py-6">
@@ -51,7 +52,7 @@ export function InvitationGate({ invitation, onOpen }: GateSectionProps) {
               </h2>
               <div className="mt-2 border-b border-white/20 px-4 py-1 md:mt-4 md:px-8">
                 <span className="font-headline text-xl font-medium italic text-secondary-fixed-dim md:text-3xl">
-                  Nama Tamu Undangan
+                  {guest.name}
                 </span>
               </div>
             </div>

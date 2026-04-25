@@ -64,6 +64,7 @@ export function buildTemplateData(
       description: `Undangan digital pernikahan untuk ${partnerOne} dan ${partnerTwo}.`,
     },
     invitation: {
+      client_id: client.id,
       slug: client.url,
       brandName: "Kala Waktu",
       partnerOne,
@@ -115,6 +116,7 @@ export function buildFallbackTemplateData(slug: string): PreviewData {
       description: `Undangan digital pernikahan untuk ${partnerOne} dan ${partnerTwo}.`,
     },
     invitation: {
+      client_id: "",
       slug,
       brandName: "Kala Waktu",
       partnerOne,

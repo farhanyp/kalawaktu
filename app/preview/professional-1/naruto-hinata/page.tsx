@@ -1,11 +1,41 @@
-﻿export const dynamic = "force-dynamic";
-export const runtime = "edge";
-
+﻿import { cookies } from "next/headers"; // Gunakan helper standar Next.js
+import { InvitationNotFoundView } from "@/app/invitation/_components/invitation-not-found";
+import { getProfessionalOnePreviewData, getGuestBySlug } from "./data";
 import { ProfessionalOneLandingPage } from "@/app/_components/template-wedding-invitation/professional-1";
-import { getProfessionalOnePreviewData } from "./data";
+import ClientCookieSetter from "./_components/ClientCookieSetter";
 
-export default async function PreviewProfessional1BerandaPage() {
+export default async function PreviewProfessional1BerandaPage(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const searchParams = await props.searchParams;
+  const urlGuest = typeof searchParams.guest === "string" ? searchParams.guest : null;
+
+  const cookieStore = await cookies();
+  const sessionGuest = cookieStore.get("guest_slug")?.value;
+
+  const activeGuestSlug = urlGuest || sessionGuest;
+
+  if (!activeGuestSlug) {
+    return <InvitationNotFoundView />;
+  }
+
   const data = await getProfessionalOnePreviewData();
+  if (!data.invitation) return <InvitationNotFoundView />;
 
-  return <ProfessionalOneLandingPage basePath={data.url} invitation={data.invitation} />;
+  const guestData = await getGuestBySlug(data.invitation.client_id, activeGuestSlug);
+
+  if (!guestData) {
+    return <InvitationNotFoundView />;
+  }
+
+  return (
+    <>
+      <ClientCookieSetter guest={guestData} />
+      <ProfessionalOneLandingPage
+        basePath={data.url}
+        invitation={data.invitation}
+        guest={guestData}
+      />
+    </>
+  );
 }
