@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FiMusic, FiPause, FiPlay } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -15,8 +15,22 @@ export function MusicPlayer({ src, songTitle, artist }: MusicPlayerProps) {
   const [isHovered, setIsHovered] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Auto-play biasanya diblokir browser sebelum ada interaksi user.
-  // Kamu bisa memicu ini lewat fungsi `onOpen` di InvitationGate tadi.
+  useEffect(() => {
+    const playAudio = async () => {
+      if (audioRef.current) {
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (err) {
+          console.log("Autoplay diblokir oleh browser. Menunggu interaksi user.");
+          setIsPlaying(false);
+        }
+      }
+    };
+
+    playAudio();
+  }, []);
+
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -34,9 +48,8 @@ export function MusicPlayer({ src, songTitle, artist }: MusicPlayerProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <audio ref={audioRef} src={src} loop />
+      <audio ref={audioRef} src={src} loop playsInline />
 
-      {/* Info Lagu (Muncul saat Hover) */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
@@ -57,16 +70,16 @@ export function MusicPlayer({ src, songTitle, artist }: MusicPlayerProps) {
         )}
       </AnimatePresence>
 
-      {/* Tombol Bulat */}
       <button
         onClick={togglePlay}
         className={`relative flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-on-secondary shadow-2xl transition-all duration-500 hover:scale-110 active:scale-90 md:h-14 md:w-14 ${
           isPlaying ? "animate-spin-slow" : ""
         }`}
       >
-        <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping opacity-20" />
+        <div
+          className={`absolute inset-0 rounded-full border-2 border-white/20 animate-ping opacity-20 ${!isPlaying && "hidden"}`}
+        />
 
-        {/* Switch Logo saat Play/Pause/Hover */}
         {isPlaying ? (
           isHovered ? (
             <FiPause size={20} />

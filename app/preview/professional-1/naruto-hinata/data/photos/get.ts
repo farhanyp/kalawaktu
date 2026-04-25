@@ -17,3 +17,20 @@ export async function getPhotosByClientUrl(clientUrl: string = DEFAULT_PREVIEW_S
 
   return (data ?? []) as PhotoRow[];
 }
+
+export async function getPhotosByClientIdForGalerrySection(client_id: string) {
+  const supabase = createServerSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("photos")
+    .select("id, client_id, name, url, created_at, updated_at")
+    .eq("client_id", client_id)
+    .order("id", { ascending: true })
+    .limit(4);
+
+  if (error) {
+    throw new Error(`Failed to fetch photos for client '${client_id}': ${error.message}`);
+  }
+
+  return (data ?? []) as PhotoRow[];
+}

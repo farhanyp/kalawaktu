@@ -75,8 +75,8 @@ export function ProfessionalOneLandingPage({ basePath, invitation, guest }: Prop
       >
         <ProfessionalOneHeroSection invitation={invitation} />
         <ProfessionalOneEventSection invitation={invitation} />
-        <ProfessionalOneStorySection basePath={basePath} />
-        <ProfessionalOneGallerySection basePath={basePath} />
+        <ProfessionalOneStorySection basePath={basePath} gallery={invitation.gallery} />
+        <ProfessionalOneGallerySection basePath={basePath} gallery={invitation.gallery} />
         <ProfessionalOneGiftSection />
         <ProfessionalOneRsvpSection invitation={invitation} guest={guest} />
         <ProfessionalOneFooterSection />
@@ -85,7 +85,6 @@ export function ProfessionalOneLandingPage({ basePath, invitation, guest }: Prop
         src="/musics/Ravyn Lenae - Love Me Not.mp3"
         artist="Ravyn Lenae"
         songTitle="Love Me Not"
-        //autoPlayTrigger={isOpen}
       />
     </div>
   );

@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
+import { GalleryItem } from "../core/types";
 
 type StorySectionProps = {
   basePath: string;
+  gallery: GalleryItem[];
 };
 
-export function ProfessionalOneStorySection({ basePath }: StorySectionProps) {
+export function ProfessionalOneStorySection({ basePath, gallery }: StorySectionProps) {
+  const firstImage = gallery[0];
+
   return (
     <section className="bg-surface px-6 py-24 md:px-24" id="cerita">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 md:grid-cols-2">
@@ -13,8 +17,8 @@ export function ProfessionalOneStorySection({ basePath }: StorySectionProps) {
           <div className="aspect-3/4 overflow-hidden rounded-xl shadow-2xl">
             <img
               className="h-full w-full object-cover"
-              alt="vintage style warm toned photograph"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUUSmpddMfP9vWLVoWTno-_dgYX7KUz6gIt872UxtaVtd_UH1179ce3nBe4p71VIfmgPl1cOBb4YeBTAFaA6RXeBgMJ-NXpCGENUBcLrUTBsXe3B9xb-KiIQ98WhwtNciRJakQHVC7Hq4O6mIuDs1uSDRnWGkUtPcCeaqk-G-fMgwbAX_22qsWHmGrMG5os1nnhNbbEdYyTmYH6bud-IZjQ9Ylje0m-n9xpbqoLpVrduNJLHS-gxDptIb11vLf09K3SsreasHh_MLj"
+              alt={firstImage?.alt || "Story featured image"}
+              src={firstImage?.src || "https://via.placeholder.com/600x800?text=No+Image"}
             />
           </div>
           <div className="absolute -right-8 -bottom-8 -z-10 h-48 w-48 rounded-xl bg-secondary-container" />
@@ -48,5 +52,3 @@ export function ProfessionalOneStorySection({ basePath }: StorySectionProps) {
     </section>
   );
 }
-
-

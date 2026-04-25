@@ -39,6 +39,11 @@ export type ProfessionalOneGuestData = {
   slug: string;
 };
 
+export type GalleryItem = {
+  src: string;
+  alt: string;
+};
+
 export type ProfessionalOneInvitationData = {
   client_id: string;
   slug: string;
@@ -56,6 +61,7 @@ export type ProfessionalOneInvitationData = {
     };
   };
   wishes: ProfessionalOneWish[];
+  gallery: GalleryItem[];
 };
 
 export type ProfessionalOneTemplateData = {

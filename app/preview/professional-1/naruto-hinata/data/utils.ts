@@ -7,6 +7,7 @@ import {
   type EventRow,
   EVENT_TYPES,
   WishesRow,
+  PhotoRow,
 } from "./types";
 import { ProfessionalOneWish } from "@/app/_components/template-wedding-invitation/professional-1/core/types";
 
@@ -48,6 +49,7 @@ export function buildTemplateData(
   client: ClientRow,
   events: EventRow[] = [],
   wishes: WishesRow[] = [],
+  photos: PhotoRow[] = [],
 ): PreviewData {
   const akadEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.AKAD);
   const resepsiEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.RESEPSI);
@@ -71,14 +73,18 @@ export function buildTemplateData(
       partnerTwo,
       weddingDateLabel: formatDateLabel(resepsiEvent?.event_date),
       venueLabel,
+      gallery: photos.map((p) => ({
+        src: p.url,
+        alt: p.name || `Moment of ${partnerOne} & ${partnerTwo}`,
+      })),
       events: {
         akad: {
-          time: formatDateLabel(akadEvent?.event_date), // Aman meskipun akadEvent undefined
+          time: formatDateLabel(akadEvent?.event_date),
           venue: akadEvent?.detail_location ?? "Lokasi Akad Nikah",
           description: "Keluarga Inti & Kerabat Dekat",
         },
         resepsi: {
-          time: formatDateLabel(resepsiEvent?.event_date), // Aman meskipun akadEvent undefined
+          time: formatDateLabel(resepsiEvent?.event_date),
           venue: resepsiEvent?.detail_location ?? "Lokasi Akad Nikah",
           description: "Keluarga Inti & Kerabat Dekat",
         },
@@ -123,14 +129,15 @@ export function buildFallbackTemplateData(slug: string): PreviewData {
       partnerTwo,
       weddingDateLabel: "Tanggal akan diumumkan",
       venueLabel: "Lokasi akan diumumkan",
+      gallery: [],
       events: {
         akad: {
-          time: formatDateLabel(null), // Aman meskipun akadEvent undefined
+          time: formatDateLabel(null),
           venue: "Lokasi Akad Nikah",
           description: "Keluarga Inti & Kerabat Dekat",
         },
         resepsi: {
-          time: formatDateLabel(null), // Aman meskipun akadEvent undefined
+          time: formatDateLabel(null),
           venue: "Lokasi Akad Nikah",
           description: "Keluarga Inti & Kerabat Dekat",
         },
