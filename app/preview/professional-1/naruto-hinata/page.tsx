@@ -1,4 +1,7 @@
-﻿import { cookies } from "next/headers"; // Gunakan helper standar Next.js
+﻿export const runtime = "edge";
+export const dynamic = "force-dynamic";
+
+import { cookies } from "next/headers";
 import { InvitationNotFoundView } from "@/app/invitation/_components/invitation-not-found";
 import { getProfessionalOnePreviewData, getGuestBySlug } from "./data";
 import { ProfessionalOneLandingPage } from "@/app/_components/template-wedding-invitation/professional-1";
