@@ -57,7 +57,7 @@ export function ProfessionalOneGaleriPage({
               </p>
             </div>
             <div className="relative md:col-span-5">
-              <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-container-high shadow-sm">
+              <div className="group relative aspect-4/5 overflow-hidden rounded-2xl bg-surface-container-high shadow-sm">
                 <img
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   alt={heroPhoto?.label ?? "Highlight Wedding Moment"}
@@ -65,7 +65,9 @@ export function ProfessionalOneGaleriPage({
                 />
               </div>
               <div className="absolute -bottom-6 -left-2 hidden rounded-xl border border-white/20 bg-surface/80 px-5 py-3 shadow-xl backdrop-blur-sm md:block">
-                <span className="font-headline text-xl text-primary-dim italic">The Union Vol. 01</span>
+                <span className="font-headline text-xl text-primary-dim italic">
+                  The Union Vol. 01
+                </span>
               </div>
             </div>
           </div>
@@ -104,7 +106,9 @@ export function ProfessionalOneGaleriPage({
 
                 {variant === 3 && (
                   <div className="border-t border-outline-variant/30 px-4 py-3">
-                    <p className="font-headline text-xl text-primary-dim italic">Pre-Wedding Bloom</p>
+                    <p className="font-headline text-xl text-primary-dim italic">
+                      Pre-Wedding Bloom
+                    </p>
                   </div>
                 )}
 

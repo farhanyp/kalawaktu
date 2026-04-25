@@ -1,10 +1,7 @@
 "use server";
-
+import { createInteractionByClientUrl } from "@/app/preview/professional-1/naruto-hinata/data/interactions/post";
+import { CreateInteractionInput } from "@/app/preview/professional-1/naruto-hinata/data/types";
 import { revalidatePath } from "next/cache";
-import {
-  createInteractionByClientUrl,
-  CreateInteractionInput,
-} from "@/app/preview/professional-1/naruto-hinata/data";
 
 export async function submitRsvpAction(clientUrl: string, input: CreateInteractionInput) {
   try {

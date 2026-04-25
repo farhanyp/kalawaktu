@@ -1,17 +1,15 @@
 ﻿import { ProfessionalOneCeritaPage } from "@/app/_components/template-wedding-invitation/professional-1";
-import {
-  DEFAULT_PREVIEW_SLUG,
-  getInvitationBundleByClientUrl,
-  getProfessionalOnePreviewData,
-} from "../data";
+import { getLoveStoriesByClientUrl } from "../data/love-stories/get";
+import { DEFAULT_PREVIEW_SLUG } from "../data/types";
+import { getProfessionalOnePreviewData } from "../data/get";
 
 export default async function PreviewProfessional1CeritaPage() {
-  const [data, bundle] = await Promise.all([
+  const [data, storiesData] = await Promise.all([
     getProfessionalOnePreviewData(DEFAULT_PREVIEW_SLUG),
-    getInvitationBundleByClientUrl(DEFAULT_PREVIEW_SLUG),
+    getLoveStoriesByClientUrl(DEFAULT_PREVIEW_SLUG),
   ]);
 
-  const stories = bundle.loveStories.map((item) => ({
+  const stories = storiesData.map((item) => ({
     id: item.id,
     header: item.header,
     subHeader: item.sub_header,
