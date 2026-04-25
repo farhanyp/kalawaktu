@@ -5,6 +5,7 @@ import { ProfessionalOneRsvpWishes } from "./rsvp-wishes";
 import { submitRsvpAction } from "../actions/rsvp-action";
 import {
   AttendanceStatus,
+  GuestCount,
   ProfessionalOneGuestData,
   ProfessionalOneInvitationData,
   ProfessionalOneRsvpFormData,
@@ -154,7 +155,7 @@ export function ProfessionalOneRsvpSection({ invitation, guest }: RSVPSectionPro
                       className="w-full rounded-lg border-none bg-white/10 p-4 text-white focus:ring-2 focus:ring-on-primary"
                       value={formData.guestCount}
                       onChange={(e) =>
-                        setFormData({ ...formData, guestCount: e.target.value as any })
+                        setFormData({ ...formData, guestCount: e.target.value as GuestCount })
                       }
                     >
                       <option className="text-on-surface" value="1">
@@ -228,7 +229,7 @@ export function ProfessionalOneRsvpSection({ invitation, guest }: RSVPSectionPro
             Memasukkan doa-doa tamu...
           </div>
         ) : (
-          <ProfessionalOneRsvpWishes wishes={wishes} />
+          <ProfessionalOneRsvpWishes wishes={wishes} clientId={invitation.client_id} />
         )}
       </div>
     </section>

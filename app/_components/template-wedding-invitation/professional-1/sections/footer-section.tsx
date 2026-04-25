@@ -18,29 +18,29 @@ export function ProfessionalOneFooterSection() {
 
           <div className="space-y-6">
             <h4 className="font-label text-xs font-bold tracking-widest text-primary uppercase">
-              Editorial Studio
+              Swrakarya Studio
             </h4>
             <ul className="space-y-4">
               <li>
                 <a
                   className="group flex items-center gap-3 text-stone-600 transition-colors hover:text-primary"
-                  href="https://instagram.com/editorialstudio"
+                  href="https://www.instagram.com/swrakarya/"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <FiCamera className="text-xl" />
-                  <span className="font-headline text-lg italic">@editorialstudio</span>
+                  <FiInstagram className="text-xl" />
+                  <span className="font-headline text-lg italic">@swrakarya</span>
                 </a>
               </li>
               <li>
                 <a
                   className="group flex items-center gap-3 text-stone-600 transition-colors hover:text-primary"
-                  href="https://tiktok.com/@editorialstudio"
+                  href="https://www.tiktok.com/@swakaryart"
                   target="_blank"
                   rel="noreferrer"
                 >
                   <FaTiktok className="text-xl" />
-                  <span className="font-headline text-lg italic">@editorialstudio</span>
+                  <span className="font-headline text-lg italic">@swakarya</span>
                 </a>
               </li>
               <li>
@@ -101,7 +101,7 @@ export function ProfessionalOneFooterSection() {
       <div className="border-t border-stone-200 bg-stone-100 px-6 py-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-6 md:flex-row">
           <div className="font-body text-[10px] font-medium tracking-[0.2em] text-stone-500 uppercase">
-            &copy; 2024 Kala Waktu. All Rights Reserved.
+            &copy; 2026 Kala Waktu. All Rights Reserved.
           </div>
         </div>
       </div>

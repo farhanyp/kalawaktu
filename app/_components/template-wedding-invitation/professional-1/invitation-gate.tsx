@@ -70,7 +70,7 @@ export function InvitationGate({ invitation, onOpen, guest }: GateSectionProps) 
 
           <button
             onClick={onOpen}
-            className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-secondary px-8 py-4 font-label text-xs font-bold tracking-[0.15em] text-on-secondary shadow-2xl transition-all hover:scale-105 active:scale-95 md:px-12 md:py-5"
+            className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-secondary px-8 py-4 font-label text-xs font-bold tracking-[0.15em] text-on-secondary shadow-2xl transition-all hover:scale-105 cursor-pointer active:scale-95 md:px-12 md:py-5"
           >
             <span className="relative z-10 flex items-center gap-2">
               <FiMail size={16} /> BUKA UNDANGAN

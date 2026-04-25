@@ -11,6 +11,7 @@ import { ProfessionalOneFooterSection } from "../sections/footer-section";
 import { InvitationGate } from "../invitation-gate";
 import type { ProfessionalOneGuestData, ProfessionalOneInvitationData } from "../core/types";
 import { getCookie, setCookie } from "../utils";
+import { MusicPlayer } from "../music-player";
 
 type Props = {
   basePath: string;
@@ -80,6 +81,12 @@ export function ProfessionalOneLandingPage({ basePath, invitation, guest }: Prop
         <ProfessionalOneRsvpSection invitation={invitation} guest={guest} />
         <ProfessionalOneFooterSection />
       </main>
+      <MusicPlayer
+        src="/musics/Ravyn Lenae - Love Me Not.mp3"
+        artist="Ravyn Lenae"
+        songTitle="Love Me Not"
+        //autoPlayTrigger={isOpen}
+      />
     </div>
   );
 }

@@ -38,38 +38,121 @@ export function ProfessionalOneGaleriPage({
         }))
       : fallbackImages.map((url, index) => ({ id: index + 1, url, label: `Photo ${index + 1}` }));
 
+  const heroPhoto = galleryItems[0];
+  const masonryItems = galleryItems.length > 1 ? galleryItems.slice(1) : galleryItems;
+
   return (
     <main className="bg-background font-body text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
       <div className="mx-auto max-w-7xl px-6 pt-32 pb-24 md:px-12">
-        <header className="mb-14">
-          <h1 className="font-headline mb-6 text-6xl leading-[0.9] tracking-tighter text-primary md:text-8xl">
-            Fragmen <span className="ml-4 text-secondary italic">Kebahagiaan</span>
-          </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-on-surface-variant">
-            Kumpulan momen yang tertangkap dalam lensa, merangkum perjalanan cinta kami yang
-            dikurasi secara editorial.
-          </p>
-        </header>
-
-        <section className="mb-20 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {galleryItems.map((item, index) => (
-            <article
-              key={item.id}
-              className="group overflow-hidden rounded-2xl bg-surface-container-low"
-            >
-              <div className={index % 3 === 0 ? "aspect-4/5" : "aspect-square"}>
+        <header className="mb-24 md:mb-32">
+          <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-12">
+            <div className="md:col-span-7">
+              <h1 className="font-headline mb-8 text-6xl leading-[0.9] tracking-tighter text-primary md:text-8xl">
+                Fragmen <br />
+                <span className="ml-8 text-secondary italic md:ml-12">Kebahagiaan</span>
+              </h1>
+              <p className="max-w-lg text-lg leading-relaxed text-on-surface-variant">
+                Kumpulan momen yang tertangkap dalam lensa, merangkum perjalanan cinta kami yang
+                dikurasi secara editorial.
+              </p>
+            </div>
+            <div className="relative md:col-span-5">
+              <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-container-high shadow-sm">
                 <img
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  alt={heroPhoto?.label ?? "Highlight Wedding Moment"}
+                  src={heroPhoto?.url ?? fallbackImages[0]}
+                />
+              </div>
+              <div className="absolute -bottom-6 -left-2 hidden rounded-xl border border-white/20 bg-surface/80 px-5 py-3 shadow-xl backdrop-blur-sm md:block">
+                <span className="font-headline text-xl text-primary-dim italic">The Union Vol. 01</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section className="mb-20 columns-1 gap-6 space-y-6 md:columns-2 lg:columns-3">
+          {masonryItems.map((item, index) => {
+            const variant = index % 6;
+
+            return (
+              <article
+                key={item.id}
+                className="group relative mb-6 break-inside-avoid overflow-hidden rounded-2xl bg-surface-container-low"
+              >
+                <img
+                  className={[
+                    "w-full object-cover transition-all duration-700",
+                    variant === 2 ? "grayscale group-hover:grayscale-0" : "",
+                    variant === 4 ? "group-hover:scale-105" : "group-hover:opacity-90",
+                  ].join(" ")}
                   alt={item.label}
                   src={item.url}
                 />
+
+                <div
+                  className={[
+                    "pointer-events-none absolute inset-0 transition-opacity",
+                    variant === 1 ? "bg-primary/10 opacity-0 group-hover:opacity-100" : "opacity-0",
+                  ].join(" ")}
+                />
+
+                <div className="flex items-center justify-between px-4 py-3">
+                  <p className="truncate text-sm text-on-surface-variant">{item.label}</p>
+                  <FiHeart className="text-primary" />
+                </div>
+
+                {variant === 3 && (
+                  <div className="border-t border-outline-variant/30 px-4 py-3">
+                    <p className="font-headline text-xl text-primary-dim italic">Pre-Wedding Bloom</p>
+                  </div>
+                )}
+
+                {variant === 5 && (
+                  <div className="absolute top-4 right-4 rounded-full border border-white/20 bg-white/10 px-4 py-1 backdrop-blur-sm">
+                    <span className="text-[10px] font-label uppercase tracking-widest text-white">
+                      Venue Decor
+                    </span>
+                  </div>
+                )}
+              </article>
+            );
+          })}
+
+          <article className="mb-6 break-inside-avoid rounded-2xl bg-primary p-10 md:p-12">
+            <FiHeart className="mb-6 text-4xl text-on-primary" />
+            <h3 className="font-headline text-3xl leading-tight text-on-primary">
+              Momen yang terhenti dalam waktu.
+            </h3>
+            <p className="mt-6 text-sm uppercase tracking-tight text-on-primary/70 italic">
+              Editorial Edition
+            </p>
+          </article>
+
+          <article className="mb-6 break-inside-avoid rounded-2xl bg-secondary-container p-8 text-center">
+            <p className="font-headline text-2xl text-on-secondary-container italic">
+              &quot;Ever thine, ever mine, ever ours.&quot;
+            </p>
+          </article>
+
+          <article className="mb-6 break-inside-avoid">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="aspect-square overflow-hidden rounded-2xl bg-surface-container-high">
+                <img
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                  alt="Close-up wedding detail"
+                  src={galleryItems[1]?.url ?? fallbackImages[1]}
+                />
               </div>
-              <div className="flex items-center justify-between px-4 py-3">
-                <p className="truncate text-sm text-on-surface-variant">{item.label}</p>
-                <FiHeart className="text-primary" />
+              <div className="aspect-square overflow-hidden rounded-2xl bg-surface-container-high">
+                <img
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                  alt="Wedding candid detail"
+                  src={galleryItems[2]?.url ?? fallbackImages[2]}
+                />
               </div>
-            </article>
-          ))}
+            </div>
+          </article>
         </section>
 
         <section className="relative mt-20 overflow-hidden rounded-[2rem] bg-surface-container-low px-8 py-24">

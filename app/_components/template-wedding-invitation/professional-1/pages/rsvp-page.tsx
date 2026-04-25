@@ -1,4 +1,7 @@
-﻿import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
 import { FiArrowLeft, FiChevronDown, FiEdit3, FiUser } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import { RiDoubleQuotesL } from "react-icons/ri";
@@ -23,6 +26,11 @@ export function ProfessionalOneRsvpPage({
   brandName = "Kala Waktu",
   interactions = [],
 }: ProfessionalOneRsvpPageProps) {
+  const PAGE_SIZE = 6;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const displayedInteractions = interactions.slice(0, visibleCount);
+  const canLoadMore = visibleCount < interactions.length;
+
   return (
     <>
       <main className="mx-auto max-w-7xl px-6 pt-32 pb-24 md:px-12 lg:px-24">
@@ -51,7 +59,7 @@ export function ProfessionalOneRsvpPage({
 
         {interactions.length > 0 ? (
           <section className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {interactions.map((item) => (
+            {displayedInteractions.map((item) => (
               <article
                 key={item.id}
                 className="rounded-xl bg-surface-container-lowest p-8 shadow-[0_12px_40px_rgba(48,51,46,0.04)]"
@@ -85,12 +93,18 @@ export function ProfessionalOneRsvpPage({
           </section>
         )}
 
-        <div className="mt-24 text-center">
-          <button className="mx-auto flex items-center gap-3 rounded-full bg-surface-container-high px-12 py-4 font-semibold text-primary transition-all cursor-pointer hover:bg-surface-container-highest">
-            <FiChevronDown />
-            Lihat Lebih Banyak
-          </button>
-        </div>
+        {interactions.length > 0 && canLoadMore ? (
+          <div className="mt-24 text-center">
+            <button
+              type="button"
+              onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+              className="mx-auto flex cursor-pointer items-center gap-3 rounded-full bg-surface-container-high px-12 py-4 font-semibold text-primary transition-all hover:bg-surface-container-highest"
+            >
+              <FiChevronDown />
+              Lihat Lebih Banyak
+            </button>
+          </div>
+        ) : null}
       </main>
 
       <footer className="mt-24 w-full bg-surface-container-low py-12 dark:bg-[#252722]">
@@ -135,3 +149,5 @@ export function ProfessionalOneRsvpPage({
     </>
   );
 }
+
+
