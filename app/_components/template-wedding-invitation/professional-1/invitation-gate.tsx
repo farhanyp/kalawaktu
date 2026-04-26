@@ -79,6 +79,25 @@ export function InvitationGate({ invitation, onOpen, guest }: GateSectionProps) 
           </button>
         </div>
       </main>
+
+      <style jsx global>{`
+        .text-shadow-elegant {
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fadeIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+      `}</style>
     </div>
   );
 }
