@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { ProfessionalOneTopNavbar } from "../sections/top-navbar";
 import type { ProfessionalOneMetadata } from "./types";
+import "../assets/index.css";
 
 type ProfessionalOneLayoutProps = {
   children: React.ReactNode;
@@ -21,9 +22,9 @@ export function ProfessionalOneLayout({
   brandLabel,
 }: ProfessionalOneLayoutProps) {
   return (
-    <>
+    <div className="professional-one-theme">
       <ProfessionalOneTopNavbar basePath={basePath} brandLabel={brandLabel} />
       {children}
-    </>
+    </div>
   );
 }

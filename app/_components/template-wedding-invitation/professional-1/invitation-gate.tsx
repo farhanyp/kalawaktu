@@ -36,7 +36,7 @@ export function InvitationGate({ invitation, onOpen, guest }: GateSectionProps) 
         <div className="animate-fade-in relative z-10 flex flex-col items-center px-6 text-center">
           <div className="mb-6 md:mb-10">
             <span className="font-label rounded-full border border-white/20 bg-white/10 px-5 py-2 text-[9px] font-bold uppercase tracking-[0.4em] text-white shadow-xl backdrop-blur-md md:text-xs">
-              24 September 2024
+              24 September 2026
             </span>
           </div>
 

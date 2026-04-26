@@ -114,7 +114,7 @@ export function ProfessionalOneRsvpPage({
               {brandName}
             </span>
             <p className="font-body text-sm tracking-wide text-primary opacity-60">
-              &copy; 2024 {brandName}. Handcrafted for our forever.
+              &copy; 2026 {brandName}. Handcrafted for our forever.
             </p>
           </div>
           <div className="flex gap-8">
@@ -149,5 +149,3 @@ export function ProfessionalOneRsvpPage({
     </>
   );
 }
-
-

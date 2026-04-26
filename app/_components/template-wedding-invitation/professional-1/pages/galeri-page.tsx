@@ -217,7 +217,7 @@ export function ProfessionalOneGaleriPage({
             </a>
           </div>
           <div className="font-body text-xs uppercase tracking-widest text-stone-500">
-            &copy; 2024 {brandName}. Designed for the modern couple.
+            &copy; 2026 {brandName}. Designed for the modern couple.
           </div>
         </div>
       </footer>
