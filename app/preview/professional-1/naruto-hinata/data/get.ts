@@ -1,11 +1,15 @@
 import { cache } from "react";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import type { PreviewData } from "./types";
+import type { PhotoRow, PreviewData } from "./types";
 import { buildFallbackTemplateData, buildTemplateData, resolveClientByUrl } from "./utils";
 import { DEFAULT_PREVIEW_SLUG as DEFAULT_SLUG } from "./types";
 import { getEventByClientIdForLandingPage } from "./events/get";
 import { getWishesByClientIdForLandingPage } from "./interactions/get";
-import { getPhotosByClientIdForGalerrySection } from "./photos/get";
+import {
+  getPhotosByClientIdForGallerySection,
+  getPhotosByClientIdForHeroSection,
+  getPhotosByClientIdForStorySection,
+} from "./photos/get";
 
 export const getProfessionalOnePreviewData = cache(
   async (clientUrl: string = DEFAULT_SLUG): Promise<PreviewData> => {
@@ -17,13 +21,26 @@ export const getProfessionalOnePreviewData = cache(
         return buildFallbackTemplateData(clientUrl);
       }
 
-      const photos = await getPhotosByClientIdForGalerrySection(client.id);
-      const events = await getEventByClientIdForLandingPage(client.id);
-      const wishes = await getWishesByClientIdForLandingPage(client.id);
+      const [photos, story, hero, events, wishes] = await Promise.all([
+        getPhotosByClientIdForGallerySection(client.id),
+        getPhotosByClientIdForStorySection(client.id),
+        getPhotosByClientIdForHeroSection(client.id),
+        getEventByClientIdForLandingPage(client.id),
+        getWishesByClientIdForLandingPage(client.id),
+      ]);
+      const heroPhoto = hero ?? (photos.length > 0 ? photos[0] : null);
+      const storyPhoto = story ?? (photos.length > 0 ? photos[0] : null);
 
-      return buildTemplateData(client, events, wishes, photos);
+      return buildTemplateData(
+        client,
+        events,
+        wishes,
+        photos,
+        heroPhoto as PhotoRow,
+        storyPhoto as PhotoRow,
+      );
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching preview data:", error);
       return buildFallbackTemplateData(clientUrl);
     }
   },

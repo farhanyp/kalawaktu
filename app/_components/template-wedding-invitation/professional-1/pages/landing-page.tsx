@@ -73,9 +73,9 @@ export function ProfessionalOneLandingPage({ basePath, invitation, guest }: Prop
           !isOpen ? "h-screen overflow-hidden opacity-0" : "opacity-100"
         }`}
       >
-        <ProfessionalOneHeroSection invitation={invitation} />
+        <ProfessionalOneHeroSection invitation={invitation} photo={invitation.photo_hero} />
         <ProfessionalOneEventSection invitation={invitation} />
-        <ProfessionalOneStorySection basePath={basePath} gallery={invitation.gallery} />
+        <ProfessionalOneStorySection basePath={basePath} photo={invitation.photo_story} />
         <ProfessionalOneGallerySection basePath={basePath} gallery={invitation.gallery} />
         <ProfessionalOneGiftSection />
         <ProfessionalOneRsvpSection invitation={invitation} guest={guest} />

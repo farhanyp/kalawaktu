@@ -50,6 +50,8 @@ export function buildTemplateData(
   events: EventRow[] = [],
   wishes: WishesRow[] = [],
   photos: PhotoRow[] = [],
+  photo: PhotoRow,
+  story: PhotoRow,
 ): PreviewData {
   const akadEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.AKAD);
   const resepsiEvent = events.find((e) => e.type?.toUpperCase() === EVENT_TYPES.RESEPSI);
@@ -73,6 +75,14 @@ export function buildTemplateData(
       partnerTwo,
       weddingDateLabel: formatDateLabel(resepsiEvent?.event_date),
       venueLabel,
+      photo_hero: {
+        src: photo.url,
+        alt: photo.name || "",
+      },
+      photo_story: {
+        src: story.url,
+        alt: story.name || "",
+      },
       gallery: photos.map((p) => ({
         src: p.url,
         alt: p.name || `Moment of ${partnerOne} & ${partnerTwo}`,
@@ -130,6 +140,14 @@ export function buildFallbackTemplateData(slug: string): PreviewData {
       weddingDateLabel: "Tanggal akan diumumkan",
       venueLabel: "Lokasi akan diumumkan",
       gallery: [],
+      photo_hero: {
+        src: "",
+        alt: "",
+      },
+      photo_story: {
+        src: "",
+        alt: "",
+      },
       events: {
         akad: {
           time: formatDateLabel(null),

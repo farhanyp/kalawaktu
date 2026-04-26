@@ -1,28 +1,32 @@
+import Image from "next/image"; // Tambahkan import Image
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import { GalleryItem } from "../core/types";
 
 type StorySectionProps = {
   basePath: string;
-  gallery: GalleryItem[];
+  photo: GalleryItem;
 };
 
-export function ProfessionalOneStorySection({ basePath, gallery }: StorySectionProps) {
-  const firstImage = gallery[0];
-
+export function ProfessionalOneStorySection({ basePath, photo }: StorySectionProps) {
   return (
     <section className="bg-surface px-6 py-24 md:px-24" id="cerita">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 md:grid-cols-2">
         <div className="relative">
-          <div className="aspect-3/4 overflow-hidden rounded-xl shadow-2xl">
-            <img
-              className="h-full w-full object-cover"
-              alt={firstImage?.alt || "Story featured image"}
-              src={firstImage?.src || "https://via.placeholder.com/600x800?text=No+Image"}
+          {/* Container ini menjaga aspek rasio 3:4 */}
+          <div className="relative aspect-3/4 overflow-hidden rounded-xl shadow-2xl">
+            <Image
+              src={photo.src || "https://via.placeholder.com/600x800?text=No+Image"}
+              alt={photo.alt || "Story featured image"}
+              fill // Mengisi container aspect-3/4
+              className="object-cover" // Menjaga gambar tidak gepeng, sama seperti img sebelumnya
+              sizes="(max-width: 768px) 100vw, 50vw" // Optimasi ukuran file berdasarkan layar
             />
           </div>
+          {/* Dekorasi kotak di belakang tetap dipertahankan sesuai UI asli */}
           <div className="absolute -right-8 -bottom-8 -z-10 h-48 w-48 rounded-xl bg-secondary-container" />
         </div>
+
         <div className="space-y-8">
           <h2 className="font-headline text-5xl leading-tight italic text-primary">
             Sebuah Cerita

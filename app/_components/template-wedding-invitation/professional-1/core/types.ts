@@ -62,6 +62,8 @@ export type ProfessionalOneInvitationData = {
   };
   wishes: ProfessionalOneWish[];
   gallery: GalleryItem[];
+  photo_hero: GalleryItem;
+  photo_story: GalleryItem;
 };
 
 export type ProfessionalOneTemplateData = {
