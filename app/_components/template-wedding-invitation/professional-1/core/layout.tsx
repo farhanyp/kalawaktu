@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
+import "../professional-1.css";
 import { ProfessionalOneTopNavbar } from "../sections/top-navbar";
 import type { ProfessionalOneMetadata } from "./types";
 
