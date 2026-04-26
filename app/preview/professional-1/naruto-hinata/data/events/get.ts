@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import { DEFAULT_PREVIEW_SLUG } from "../types";
+import { DEFAULT_PREVIEW_SLUG, PhotoRow } from "../types";
 import { buildTemplateData, resolveClientByUrl } from "../utils";
 
 export async function getsEventByClientUrl(clientUrl: string = DEFAULT_PREVIEW_SLUG) {
@@ -15,7 +15,7 @@ export async function getsEventByClientUrl(clientUrl: string = DEFAULT_PREVIEW_S
 
   if (eventError) {
     console.error(`Failed to fetch event for client '${client.id}': ${eventError.message}`);
-    return buildTemplateData(client, [], []);
+    return buildTemplateData(client, [], [], [], {} as PhotoRow, {} as PhotoRow);
   }
 
   return event ?? [];
